@@ -12,6 +12,8 @@ public class StoredProcedureResult {
         {"HWR1204", "(HWR1204) 트랜잭션에 실패하였습니다. (수신자 금액을 업데이트하지 못했습니다."},
         {"HWR2001", "(HWR2001) 비즈니스 계좌ID를 확인해주십시오"},
         {"HWR2101", "(HWR2101) 해당 계좌는 비즈니스 계좌가 아닙니다"},
+        {"HWR2111", "(HWR2111) 해당 잔고는 개인잔고가 아닙니다."},
+        {"HWR2201", "(HWR2201) 해당 사용자가 존재하지 않습니다."},
     };
 
     public bool Success { get; set; } = true;
