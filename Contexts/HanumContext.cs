@@ -12,10 +12,13 @@ public partial class HanumContext : DbContext
     }
 
     public HanumContext(DbContextOptions<HanumContext> options)
-        : base(options) {
+        : base(options)
+    {
     }
 
     public virtual DbSet<Balance> Balances { get; set; }
+
+    public virtual DbSet<Booth> Booths { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
