@@ -6,7 +6,8 @@ namespace HanumPay.Models;
 /// <summary>
 /// 계좌 송금 내역
 /// </summary>
-public partial class Transaction {
+public partial class Transaction
+{
     /// <summary>
     /// 트랜잭션 고유 ID
     /// </summary>

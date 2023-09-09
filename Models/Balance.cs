@@ -9,7 +9,7 @@ namespace HanumPay.Models;
 public partial class Balance
 {
     /// <summary>
-    /// 계좌 고유 ID
+    /// 잔고 고유 ID
     /// </summary>
     public ulong Id { get; set; }
 
@@ -19,19 +19,24 @@ public partial class Balance
     public ulong? UserId { get; set; }
 
     /// <summary>
-    /// 계좌 정산 후 총 잔액
+    /// 잔고 정산 후 총 잔액
     /// </summary>
     public ulong Amount { get; set; }
 
     /// <summary>
-    /// 계좌 분류
+    /// 잔고 분류
     /// </summary>
     public string Type { get; set; } = null!;
 
     /// <summary>
-    /// 계좌 메모
+    /// 잔고 메모
     /// </summary>
     public string? Comment { get; set; }
+
+    /// <summary>
+    /// 잔고 이름
+    /// </summary>
+    public string Label { get; set; } = null!;
 
     public virtual ICollection<Transaction> TransactionReceivers { get; set; } = new List<Transaction>();
 

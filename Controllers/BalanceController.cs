@@ -4,6 +4,7 @@ using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.Responses;
 
 namespace HanumPay.Controllers;
@@ -49,6 +50,28 @@ public class PaymentController : ControllerBase {
                     TransferAmount = paymentResult.TransferAmount,
                     Time = paymentResult.Time
                 }
+            }
+        );
+    }
+
+    [HttpGet("info/{balanceId}")]
+    public async Task<APIResponse<BalanceInfoResponse>> GetBalanceInfo([FromRoute] ulong balanceId) {
+        var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var balanceInfo = await _context.Balances.FindAsync(balanceId);
+
+        if (balanceInfo == null) {
+            _logger.LogWarning("잔고정보조회실패: 잔고를 찾을 수 없음 [잔고ID: {BalanceId}, 요청자ID: {UserId}]", balanceId, userId);
+            return APIResponse<BalanceInfoResponse>.FromError("BALANCE_NOT_FOUND");
+        }
+
+        _logger.LogInformation("잔고정보조회성공: [잔고ID: {BalanceId}, 요청자ID: {UserId}, 잔고이름: {BalanceName}, 잔고타입: {BalanceType}]",
+            balanceId, userId, balanceInfo.Type, balanceInfo.Type);
+
+        return APIResponse<BalanceInfoResponse>.FromData(
+            new() {
+                Id = balanceInfo.Id,
+                Label = balanceInfo.Label,
+                Type = balanceInfo.Type
             }
         );
     }
