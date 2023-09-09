@@ -4,20 +4,18 @@ using System.ComponentModel.DataAnnotations;
 namespace HanumPay.Models.Requests;
 
 /// <summary>
-/// 결제 요청 DTO
+/// 환전 송금 요청 DTO
 /// </summary>
-public class PaymentRequest {
+public class ExchangeTransferRequest {
     /// <summary>
-    /// 비즈니스 잔고 ID
+    /// 개인 잔고 소유자 ID
     /// </summary>
     [Required]
     [Range(1, ulong.MaxValue)]
-    public ulong BusinessId { get; set; }
+    public ulong UserId { get; set; }
 
     /// <summary>
-    /// 결제 금액
+    /// 환전 금액
     /// </summary>
-    [Required]
-    [Range(1, ulong.MaxValue)]
     public ulong Amount { get; set; }
 }
