@@ -4,7 +4,6 @@ using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Models.Responses;
 
 namespace HanumPay.Controllers;
@@ -31,13 +30,13 @@ public class PaymentController : ControllerBase {
         );
 
         if (!paymentResult.Success) {
-            _logger.LogWarning("결제실패: {ErrorMessage} [{UserId} -> {BusinessId}, 결제금액: {Amount}]",
+            _logger.LogWarning("결제실패: {ErrorMessage} [송금자: {UserId}, 수신자: {BusinessId}, 결제금액: {Amount}]",
                 paymentResult.ErrorMessage ?? "Unknown", userId, paymentRequest.BusinessId, paymentRequest.Amount);
 
             return APIResponse<PaymentResponse>.FromError(paymentResult.ErrorCode ?? "UNKNOWN_ERROR");
         }
 
-        _logger.LogInformation("결제성공: [{UserId} -> {BusinessId}, 결제금액: {Amount}, 잔액: {BalanceAmount}]",
+        _logger.LogInformation("결제성공: [송금자: {UserId}, 수신자: {BusinessId}, 결제금액: {Amount}, 잔액: {BalanceAmount}]",
             userId, paymentRequest.BusinessId, paymentRequest.Amount, paymentResult.SenderAmount);
 
         return APIResponse<PaymentResponse>.FromData(

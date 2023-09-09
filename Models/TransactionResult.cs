@@ -33,3 +33,14 @@ public class TransactionResult : StoredProcedureResult {
     /// </summary>
     public ulong TransferAmount { get; set; }
 }
+
+
+/// <summary>
+/// 환전 트랜잭션 결과
+/// </summary>
+public class ExchangeResult : TransactionResult {
+    /// <summary>
+    /// 누적환전금
+    /// </summary>
+    public ulong TotalExchangeAmount { get; set; }
+}
