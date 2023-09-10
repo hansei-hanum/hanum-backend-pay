@@ -11,7 +11,7 @@ public class APIResponse<TData> {
 
     public static APIResponse<TData> FromData(TData data) {
         return new APIResponse<TData> {
-            Code = "SUCCESS",       
+            Code = "SUCCESS",
             Data = data
         };
     }
@@ -21,4 +21,11 @@ public class APIResponse<TData> {
             Code = code
         };
     }
+}
+
+public class APIPagenationResponse {
+    public required int Page { get; set; }
+    public required int Limit { get; set; }
+    public required int Total { get; set; }
+    public int TotalPage => (int)Math.Ceiling((double)Total / Limit);
 }

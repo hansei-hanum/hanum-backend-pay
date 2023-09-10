@@ -28,7 +28,7 @@ CREATE PROCEDURE `EoullimPaymentCancel`(
 	OUT `userBalanceAmount` BIGINT UNSIGNED,
 	OUT `boothBalanceAmount` BIGINT UNSIGNED,
 	OUT `paidAmount` BIGINT UNSIGNED,
-	OUT `refundAmount` BIGINT UNSIGNED
+	OUT `refundedAmount` BIGINT UNSIGNED
 )
     COMMENT '한세어울림한마당 결제 취소'
 BEGIN
@@ -74,8 +74,8 @@ BEGIN
 	         `status` = 'refunded',
       		`refundTransactionId` = transactionId,
       		`refundComment` = message,
-      		`refundTime` = transactionTime,
-      		`refundAmount` = paidAmount
+      		`refundedTime` = transactionTime,
+      		`refundedAmount` = paidAmount
         WHERE `id` = paymentId;
     
 	 -- 무결성 검증
@@ -86,7 +86,7 @@ BEGIN
     END IF;
     
     -- 결제취소금액 설정
-    SET refundAmount := paidAmount;
+    SET refundedAmount := paidAmount;
     
     -- 트랜잭션 커밋
     COMMIT;

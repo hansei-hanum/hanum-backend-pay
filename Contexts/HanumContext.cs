@@ -167,23 +167,23 @@ public partial class HanumContext : DbContext
                 .HasComment("결제트랜잭션고유번호")
                 .HasColumnType("bigint(20) unsigned")
                 .HasColumnName("paymentTransactionId");
-            entity.Property(e => e.RefundAmount)
-                .HasComment("결제취소금액")
-                .HasColumnType("bigint(20) unsigned")
-                .HasColumnName("refundAmount");
             entity.Property(e => e.RefundComment)
                 .HasMaxLength(24)
                 .HasComment("환불메시지")
                 .HasColumnName("refundComment")
                 .UseCollation("utf8mb4_bin");
-            entity.Property(e => e.RefundTime)
-                .HasComment("결제취소시간")
-                .HasColumnType("datetime")
-                .HasColumnName("refundTime");
             entity.Property(e => e.RefundTransactionId)
                 .HasComment("환불트랜잭션고유번호")
                 .HasColumnType("bigint(20) unsigned")
                 .HasColumnName("refundTransactionId");
+            entity.Property(e => e.RefundedAmount)
+                .HasComment("결제취소금액")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("refundedAmount");
+            entity.Property(e => e.RefundedTime)
+                .HasComment("결제취소시간")
+                .HasColumnType("datetime")
+                .HasColumnName("refundedTime");
             entity.Property(e => e.Status)
                 .HasComment("결제상태")
                 .HasColumnType("enum('paid','refunded')")
