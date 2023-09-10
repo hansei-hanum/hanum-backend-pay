@@ -1,14 +1,17 @@
+using System.Security.Claims;
 using HanumPay.Contexts;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Models.Responses;
 
 namespace HanumPay.Controllers;
 
 [Authorize(AuthenticationSchemes = "HanumBoothAuth")]
 [ApiController]
-[Route("booths")]
-public class EoullinBoothController : ControllerBase {
+[Route("booth")]
+public partial class EoullinBoothController : ControllerBase {
     readonly ILogger<EoullinBoothController> _logger;
     readonly HanumContext _context;
 
@@ -17,24 +20,34 @@ public class EoullinBoothController : ControllerBase {
         _context = context;
     }
 
-    [Authorize(AuthenticationSchemes = "HanumAuth")]
-    [HttpGet("{boothId}")]
-    public async Task<APIResponse<EoullimBoothInfoResponse>> GetBoothInfo([FromRoute] ulong boothId) {
-        var boothInfo = await _context.EoullimBooths.FindAsync(boothId);
+    [HttpGet("payment/history")]
+    public async Task<APIResponse<EoullimBoothPaymentHistoryResponse>> GetPaymentHistory(
+        [FromQuery] int page = 1,
+        [FromQuery] int limit = 20
+    ) {
+        var boothId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        if (boothInfo is null) {
-            _logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
-
-            return APIResponse<EoullimBoothInfoResponse>.FromError("BOOTH_NOT_FOUND");
-        }
-
-        _logger.LogInformation("부스정보조회성공: [부스: {BoothId}, 이름: {BoothName}]", boothId, boothInfo.Name);
-
-        return APIResponse<EoullimBoothInfoResponse>.FromData(
-            new() {
-                Id = boothInfo.Id,
-                Name = boothInfo.Name,
-            }
-        );
+        return APIResponse<EoullimBoothPaymentHistoryResponse>.FromData(new() {
+            Page = page,
+            Limit = limit,
+            Total = await _context.EoullimPayments.CountAsync(p => p.BoothId == boothId),
+            Payments = (await _context.EoullimPayments
+                .Where(p => p.BoothId == boothId)
+                .OrderByDescending(p => p.Id)
+                .Skip((page - 1) * limit)
+                .Take(limit)
+                .ToListAsync()).Select(p => new EoullimBoothPayment() {
+                    Id = p.Id,
+                    UserId = p.UserId,
+                    BoothId = p.BoothId,
+                    PaidAmount = p.PaidAmount,
+                    RefundedAmount = p.RefundedAmount,
+                    PaymentComment = p.PaymentComment,
+                    RefundComment = p.RefundComment,
+                    Status = p.Status,
+                    PaidTime = p.PaidTime,
+                    RefundedTime = p.RefundedTime
+                }).ToList()
+        });
     }
 }
