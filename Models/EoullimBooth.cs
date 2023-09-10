@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace HanumPay.Models;
 
 /// <summary>
-/// 어울림한마당 부스
+/// 한세어울림한마당 부스
 /// </summary>
-public partial class Booth
+public partial class EoullimBooth
 {
     /// <summary>
     /// 부스 고유번호
@@ -14,9 +14,9 @@ public partial class Booth
     public ulong Id { get; set; }
 
     /// <summary>
-    /// 부스 키
+    /// 부스  토큰
     /// </summary>
-    public string Key { get; set; } = null!;
+    public string Token { get; set; } = null!;
 
     /// <summary>
     /// 부스 구분
@@ -42,4 +42,8 @@ public partial class Booth
     /// 부스 수정 날짜
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
+
+    public virtual EoullimBalance? EoullimBalance { get; set; }
+
+    public virtual ICollection<EoullimPayment> EoullimPayments { get; set; } = new List<EoullimPayment>();
 }

@@ -14,20 +14,41 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table hanum.balances
-CREATE TABLE IF NOT EXISTS `balances` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '잔고 고유 ID',
-  `user_id` bigint(20) unsigned DEFAULT NULL COMMENT '사용자 ID, 비즈니스의 경우 NULL',
-  `amount` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '잔고 정산 후 총 잔액',
-  `type` enum('personal','business') NOT NULL DEFAULT 'personal' COMMENT '잔고 분류',
-  `comment` varchar(24) DEFAULT NULL COMMENT '잔고 메모',
-  `label` varchar(24) NOT NULL COMMENT '잔고 이름',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `USER_ID_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='계좌';
-
--- Data exporting was unselected.
+-- Dumping structure for procedure hanum.EoullimPersonalBalanceCharge
+DELIMITER //
+CREATE PROCEDURE `EoullimPersonalBalanceCharge`(
+	IN `userId` BIGINT UNSIGNED,
+	IN `transferAmount` BIGINT UNSIGNED,
+	IN `message` VARCHAR(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+	OUT `transactionId` BIGINT UNSIGNED,
+	OUT `transactionTime` DATETIME,
+	OUT `senderAmount` BIGINT UNSIGNED,
+	OUT `receiverAmount` BIGINT UNSIGNED,
+	OUT `balanceId` BIGINT UNSIGNED,
+	OUT `totalExchangeAmount` BIGINT UNSIGNED
+)
+    COMMENT '한세어울림한마당 잔고 충전'
+BEGIN
+    -- 개인잔고 고유번호 조회 및 개인잔고 타입 보장
+    SET balanceId := EoullimEnsurePersonalBalance(userId, NULL);
+    
+    -- 트랜잭션 호출
+    CALL EoullimTransaction(
+	     NULL,
+		  balanceId,
+		  transferAmount,
+		  message,
+		  
+		  transactionId,
+		  transactionTime,
+		  senderAmount,
+		  receiverAmount
+	 );
+	 
+	 -- 환전 총액 조회
+	 SELECT SUM(amount) INTO totalExchangeAmount FROM `EoullimTransactions` WHERE senderId IS NULL;
+END//
+DELIMITER ;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

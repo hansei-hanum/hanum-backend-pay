@@ -14,18 +14,20 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table hanum.booths
-CREATE TABLE IF NOT EXISTS `booths` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '부스 고유번호',
-  `key` varchar(16) NOT NULL COMMENT '부스 키',
-  `class` varchar(24) NOT NULL COMMENT '부스 구분',
-  `name` varchar(24) NOT NULL COMMENT '부스명',
-  `location` varchar(64) NOT NULL DEFAULT '' COMMENT '부스 위치',
-  `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '부스 생성 날짜',
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp() COMMENT '부스 수정 날짜',
+-- Dumping structure for table hanum.EoullimTransactions
+CREATE TABLE IF NOT EXISTS `EoullimTransactions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '트랜잭션 고유 ID',
+  `senderId` bigint(20) unsigned DEFAULT NULL COMMENT '송금자 ID, 환전소의 경우 NULL로 설정',
+  `receiverId` bigint(20) unsigned NOT NULL COMMENT '수신자 ID',
+  `amount` bigint(20) unsigned NOT NULL COMMENT '송금액',
+  `comment` varchar(24) DEFAULT NULL COMMENT '송금 메모',
+  `time` datetime NOT NULL DEFAULT current_timestamp() COMMENT '트랜잭션 시간',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='어울림한마당 부스';
+  KEY `SENDER_BALANCE_FK` (`senderId`) USING BTREE,
+  KEY `RECEIVER_BALANCE_FK` (`receiverId`) USING BTREE,
+  CONSTRAINT `RECEIVER_BALANCE_FK` FOREIGN KEY (`receiverId`) REFERENCES `EoullimBalances` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `SENDER_BALANCE_FK` FOREIGN KEY (`senderId`) REFERENCES `EoullimBalances` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='한세어울림한마당 이체 내역';
 
 -- Data exporting was unselected.
 

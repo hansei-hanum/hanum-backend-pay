@@ -14,42 +14,42 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for function hanum.ensure_personal_balance
+-- Dumping structure for function hanum.EoullimEnsurePersonalBalance
 DELIMITER //
-CREATE FUNCTION `ensure_personal_balance`(`personal_id` BIGINT UNSIGNED,
+CREATE FUNCTION `EoullimEnsurePersonalBalance`(`personalUserId` BIGINT UNSIGNED,
 	`message` VARCHAR(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) RETURNS bigint(20) unsigned
-    COMMENT '개인 고객의 계정 연동 잔고를 보장함 (단일 커서 RESET 필요)'
+    COMMENT '한세어울림한마당 개인 사용자 잔고 ID 보장 조회'
 BEGIN
-    DECLARE balance_id BIGINT UNSIGNED;
-    DECLARE balance_type ENUM('personal', 'business');
+    DECLARE balanceId BIGINT UNSIGNED;
+    DECLARE balanceType ENUM('personal', 'booth');
 
     -- 잔고가 존재하지 않으면 초기화하고, 있다면 무시
-	 INSERT IGNORE INTO `balances` (`user_id`, `amount`, `type`, `comment`, `label`)
-	     VALUES (personal_id, 0, 'personal', message, (SELECT `name` FROM `users` WHERE id = personal_id));
+	 INSERT IGNORE INTO `EoullimBalances` (`userId`, `amount`, `type`, `comment`)
+	     VALUES (personalUserId, 0, 'personal', message);
 	    
     -- 추가된 잔고 고유번호
-    SET balance_id = LAST_INSERT_ID();
+    SET balanceId = LAST_INSERT_ID();
     
     -- 새로운 레코드가 삽입되지 않았다면 레코드의 ID를 가져옴
-    IF balance_id = 0 THEN
-        SELECT `id`, `type` INTO balance_id, balance_type FROM `balances` WHERE user_id = personal_id;
+    IF balanceId = 0 THEN
+        SELECT `id`, `type` INTO balanceId, balanceType FROM `EoullimBalances` WHERE userId = personalUserId LIMIT 1;
 	
 		 -- 사용자 존재 여부 확인
-		 IF balance_id = 0 THEN
-		     -- (HWR2201) 해당 사용자가 존재하지 않습니다.
-	        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'HWR2201';
+		 IF balanceId = 0 THEN
+		     -- 해당 사용자가 존재하지 않습니다.
+	        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'USER_NOT_FOUND';
 		 END IF;
 		 
 	    -- 개안잔고 여부 조회
-	    IF balance_type != 'personal' THEN
-	    	  -- (HWR2111) 해당 잔고는 개인잔고가 아닙니다.
-	        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'HWR2111';
+	    IF balanceType != 'personal' THEN
+	    	  -- 해당 잔고는 개인잔고가 아닙니다.
+	        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'NOT_A_PERSONAL_BALANCE';
 	    END IF;
     END IF;
     
     -- 고유번호 반환
-    RETURN balance_id;
+    RETURN balanceId;
 END//
 DELIMITER ;
 

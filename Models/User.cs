@@ -15,5 +15,7 @@ public partial class User
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual Balance? Balance { get; set; }
+    public virtual EoullimBalance? EoullimBalance { get; set; }
+
+    public virtual ICollection<EoullimPayment> EoullimPayments { get; set; } = new List<EoullimPayment>();
 }

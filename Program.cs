@@ -20,6 +20,10 @@ builder.Services.AddSwaggerGen();
 
 // DB Context
 builder.Services.AddDbContext<HanumContext>();
+// Redis Cache
+builder.Services.AddStackExchangeRedisCache(options => {
+    options.Configuration = builder.Configuration.GetConnectionString("Cache.Redis");
+});
 
 // gRPC Client
 builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options => {
@@ -27,8 +31,9 @@ builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options => {
 });
 
 // Authentication Handler
-builder.Services.AddAuthentication("HanumAuth")
-    .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>("HanumAuth", null);
+builder.Services.AddAuthentication()
+    .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>("HanumAuth", null)
+    .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>("HanumBoothAuth", null);
 
 var app = builder.Build();
 

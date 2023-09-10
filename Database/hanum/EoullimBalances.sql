@@ -14,16 +14,20 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table hanum.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `phone` varchar(11) NOT NULL,
-  `name` varchar(5) NOT NULL,
-  `profile` varchar(100) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+-- Dumping structure for table hanum.EoullimBalances
+CREATE TABLE IF NOT EXISTS `EoullimBalances` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '잔고 고유 ID',
+  `userId` bigint(20) unsigned DEFAULT NULL COMMENT '사용자 ID',
+  `boothId` bigint(20) unsigned DEFAULT NULL COMMENT '부스 ID',
+  `amount` bigint(20) unsigned NOT NULL DEFAULT 0 COMMENT '잔고 정산 후 총 잔액',
+  `type` enum('personal','booth') NOT NULL DEFAULT 'personal' COMMENT '잔고 분류',
+  `comment` varchar(24) DEFAULT NULL COMMENT '잔고 메모',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `user_id` (`userId`) USING BTREE,
+  UNIQUE KEY `booth_id` (`boothId`) USING BTREE,
+  CONSTRAINT `BOOTH_ID_FK` FOREIGN KEY (`boothId`) REFERENCES `EoullimBooths` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `USER_ID_FK` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='한세어울림한마당 잔고';
 
 -- Data exporting was unselected.
 

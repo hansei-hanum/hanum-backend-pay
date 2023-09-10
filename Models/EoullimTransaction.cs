@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace HanumPay.Models;
 
 /// <summary>
-/// 계좌 송금 내역
+/// 한세어울림한마당 이체 내역
 /// </summary>
-public partial class Transaction
+public partial class EoullimTransaction
 {
     /// <summary>
     /// 트랜잭션 고유 ID
@@ -38,7 +38,7 @@ public partial class Transaction
     /// </summary>
     public DateTime Time { get; set; }
 
-    public virtual Balance Receiver { get; set; } = null!;
+    public virtual EoullimBalance Receiver { get; set; } = null!;
 
-    public virtual Balance? Sender { get; set; }
+    public virtual EoullimBalance? Sender { get; set; }
 }

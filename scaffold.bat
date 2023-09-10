@@ -1,1 +1,1 @@
-dotnet ef dbcontext scaffold "Name=DefaultConnection" Pomelo.EntityFrameworkCore.MySql -o Models --context-dir Contexts -t balances -t transactions -t users -t booths -f
+dotnet ef dbcontext scaffold "Name=Database.SQL" Pomelo.EntityFrameworkCore.MySql -o Models --context-dir Contexts -t EoullimPayments -t EoullimBalances -t EoullimBooths -t EoullimTransactions -t users -f

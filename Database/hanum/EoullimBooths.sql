@@ -14,20 +14,18 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table hanum.transactions
-CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '트랜잭션 고유 ID',
-  `sender_id` bigint(20) unsigned DEFAULT NULL COMMENT '송금자 ID, 환전소의 경우 NULL로 설정',
-  `receiver_id` bigint(20) unsigned NOT NULL COMMENT '수신자 ID',
-  `amount` bigint(20) unsigned NOT NULL COMMENT '송금액',
-  `comment` varchar(24) DEFAULT NULL COMMENT '송금 메모',
-  `time` datetime NOT NULL DEFAULT current_timestamp() COMMENT '트랜잭션 시간',
+-- Dumping structure for table hanum.EoullimBooths
+CREATE TABLE IF NOT EXISTS `EoullimBooths` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '부스 고유번호',
+  `token` varchar(16) NOT NULL COMMENT '부스  토큰',
+  `class` varchar(24) NOT NULL COMMENT '부스 구분',
+  `name` varchar(24) NOT NULL COMMENT '부스명',
+  `location` varchar(64) NOT NULL DEFAULT '' COMMENT '부스 위치',
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp() COMMENT '부스 생성 날짜',
+  `updatedAt` datetime DEFAULT NULL ON UPDATE current_timestamp() COMMENT '부스 수정 날짜',
   PRIMARY KEY (`id`),
-  KEY `SENDER_BALANCE_FK` (`sender_id`),
-  KEY `RECEIVER_BALANCE_FK` (`receiver_id`),
-  CONSTRAINT `RECEIVER_BALANCE_FK` FOREIGN KEY (`receiver_id`) REFERENCES `balances` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `SENDER_BALANCE_FK` FOREIGN KEY (`sender_id`) REFERENCES `balances` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='계좌 송금 내역';
+  UNIQUE KEY `key` (`token`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='한세어울림한마당 부스';
 
 -- Data exporting was unselected.
 

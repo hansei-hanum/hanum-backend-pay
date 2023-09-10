@@ -14,41 +14,29 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for procedure hanum.personal_exchange
+-- Dumping structure for procedure hanum.EoullimBalance
 DELIMITER //
-CREATE PROCEDURE `personal_exchange`(
-	IN `personal_user_id` BIGINT UNSIGNED,
-	IN `transfer_amount` BIGINT UNSIGNED,
-	IN `message` VARCHAR(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-	OUT `transaction_id` BIGINT UNSIGNED,
-	OUT `transaction_time` DATETIME,
-	OUT `sender_amount` BIGINT UNSIGNED,
-	OUT `receiver_amount` BIGINT UNSIGNED,
-	OUT `personal_balance_id` BIGINT UNSIGNED,
-	OUT `total_exchange_amount` BIGINT UNSIGNED
+CREATE PROCEDURE `EoullimBalance`(
+	IN `balanceId` BIGINT UNSIGNED,
+	IN `recordPage` INT UNSIGNED,
+	IN `recordCount` SMALLINT UNSIGNED,
+	OUT `balanceAmount` BIGINT UNSIGNED
 )
-    COMMENT '개인 잔고로 환전합니다.'
+    COMMENT '한세어울림한마당 잔고 잔액 조회'
 BEGIN
-    DECLARE dummy_uint64 BIGINT UNSIGNED;
+    DECLARE offs INT UNSIGNED;
     
-    -- 개인잔고 고유번호 조회 및 개인잔고 타입 보장
-    SET personal_balance_id := ensure_personal_balance(personal_user_id, NULL);
+    -- 잔액 조회
+    SELECT amount INTO balanceAmount FROM `EoullimBalances` WHERE id = balanceId;
     
-    -- 트랜잭션 호출
-    CALL transaction(
-	     NULL,
-		  personal_balance_id,
-		  transfer_amount,
-		  message,
-		  
-		  transaction_id,
-		  transaction_time,
-		  sender_amount,
-		  receiver_amount
-	 );
-	 
-	 -- 환전 총액 조회
-	 SELECT SUM(amount) INTO total_exchange_amount FROM `transactions` WHERE sender_id IS NULL;
+    -- 송금이력 조회
+    IF recordCount > 0 THEN
+        SET offs = (recordPage - 1) * recordCount;
+        SELECT * FROM `EoullimTransactions`
+		      WHERE senderId = balanceId OR receiverId = balanceId
+				ORDER BY `time` DESC
+				LIMIT recordCount OFFSET offs;
+    END IF;
 END//
 DELIMITER ;
 

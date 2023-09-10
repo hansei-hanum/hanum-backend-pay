@@ -16,16 +16,18 @@ public partial class HanumContext : DbContext
     {
     }
 
-    public virtual DbSet<Balance> Balances { get; set; }
+    public virtual DbSet<EoullimBalance> EoullimBalances { get; set; }
 
-    public virtual DbSet<Booth> Booths { get; set; }
+    public virtual DbSet<EoullimBooth> EoullimBooths { get; set; }
 
-    public virtual DbSet<Transaction> Transactions { get; set; }
+    public virtual DbSet<EoullimPayment> EoullimPayments { get; set; }
+
+    public virtual DbSet<EoullimTransaction> EoullimTransactions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("name=DefaultConnection", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.6.14-mariadb"));
+        => optionsBuilder.UseMySql("name=Database.SQL", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.6.14-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,13 +35,15 @@ public partial class HanumContext : DbContext
             .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
 
-        modelBuilder.Entity<Balance>(entity =>
+        modelBuilder.Entity<EoullimBalance>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity
-                .ToTable("balances", tb => tb.HasComment("계좌"))
+                .ToTable(tb => tb.HasComment("한세어울림한마당 잔고"))
                 .UseCollation("utf8mb4_bin");
+
+            entity.HasIndex(e => e.BoothId, "booth_id").IsUnique();
 
             entity.HasIndex(e => e.UserId, "user_id").IsUnique();
 
@@ -51,36 +55,40 @@ public partial class HanumContext : DbContext
                 .HasComment("잔고 정산 후 총 잔액")
                 .HasColumnType("bigint(20) unsigned")
                 .HasColumnName("amount");
+            entity.Property(e => e.BoothId)
+                .HasComment("부스 ID")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("boothId");
             entity.Property(e => e.Comment)
                 .HasMaxLength(24)
                 .HasComment("잔고 메모")
                 .HasColumnName("comment");
-            entity.Property(e => e.Label)
-                .HasMaxLength(24)
-                .HasComment("잔고 이름")
-                .HasColumnName("label");
             entity.Property(e => e.Type)
                 .HasDefaultValueSql("'personal'")
                 .HasComment("잔고 분류")
-                .HasColumnType("enum('personal','business')")
+                .HasColumnType("enum('personal','booth')")
                 .HasColumnName("type");
             entity.Property(e => e.UserId)
-                .HasComment("사용자 ID, 비즈니스의 경우 NULL")
+                .HasComment("사용자 ID")
                 .HasColumnType("bigint(20) unsigned")
-                .HasColumnName("user_id");
+                .HasColumnName("userId");
 
-            entity.HasOne(d => d.User).WithOne(p => p.Balance)
-                .HasForeignKey<Balance>(d => d.UserId)
+            entity.HasOne(d => d.Booth).WithOne(p => p.EoullimBalance)
+                .HasForeignKey<EoullimBalance>(d => d.BoothId)
+                .HasConstraintName("BOOTH_ID_FK");
+
+            entity.HasOne(d => d.User).WithOne(p => p.EoullimBalance)
+                .HasForeignKey<EoullimBalance>(d => d.UserId)
                 .HasConstraintName("USER_ID_FK");
         });
 
-        modelBuilder.Entity<Booth>(entity =>
+        modelBuilder.Entity<EoullimBooth>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("booths", tb => tb.HasComment("어울림한마당 부스"));
+            entity.ToTable(tb => tb.HasComment("한세어울림한마당 부스"));
 
-            entity.HasIndex(e => e.Key, "key").IsUnique();
+            entity.HasIndex(e => e.Token, "key").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasComment("부스 고유번호")
@@ -94,11 +102,7 @@ public partial class HanumContext : DbContext
                 .HasDefaultValueSql("current_timestamp()")
                 .HasComment("부스 생성 날짜")
                 .HasColumnType("datetime")
-                .HasColumnName("created_at");
-            entity.Property(e => e.Key)
-                .HasMaxLength(16)
-                .HasComment("부스 키")
-                .HasColumnName("key");
+                .HasColumnName("createdAt");
             entity.Property(e => e.Location)
                 .HasMaxLength(64)
                 .HasDefaultValueSql("''")
@@ -108,18 +112,118 @@ public partial class HanumContext : DbContext
                 .HasMaxLength(24)
                 .HasComment("부스명")
                 .HasColumnName("name");
+            entity.Property(e => e.Token)
+                .HasMaxLength(16)
+                .HasComment("부스  토큰")
+                .HasColumnName("token");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasComment("부스 수정 날짜")
                 .HasColumnType("datetime")
-                .HasColumnName("updated_at");
+                .HasColumnName("updatedAt");
         });
 
-        modelBuilder.Entity<Transaction>(entity =>
+        modelBuilder.Entity<EoullimPayment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("transactions", tb => tb.HasComment("계좌 송금 내역"));
+            entity.ToTable(tb => tb.HasComment("한세어울림한마당 결제내역"));
+
+            entity.HasIndex(e => e.BoothBalanceId, "EOULLIM_PAYMENTS_BOOTH_BALANCE_ID_FK");
+
+            entity.HasIndex(e => e.BoothId, "EOULLIM_PAYMENTS_BOOTH_ID_FK");
+
+            entity.HasIndex(e => e.UserBalanceId, "EOULLIM_PAYMENTS_USER_BALANCE_ID_FK");
+
+            entity.HasIndex(e => e.UserId, "EOULLIM_PAYMENTS_USER_ID_FK");
+
+            entity.Property(e => e.Id)
+                .HasComment("결제고유변호")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.BoothBalanceId)
+                .HasComment("결제대상잔고고유번호")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("boothBalanceId");
+            entity.Property(e => e.BoothId)
+                .HasComment("결제대상")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("boothId");
+            entity.Property(e => e.PaidAmount)
+                .HasComment("결제금액")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("paidAmount");
+            entity.Property(e => e.PaidTime)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasComment("결제시간")
+                .HasColumnType("datetime")
+                .HasColumnName("paidTime");
+            entity.Property(e => e.PaymentComment)
+                .HasMaxLength(24)
+                .HasComment("결제메시지")
+                .HasColumnName("paymentComment")
+                .UseCollation("utf8mb4_bin");
+            entity.Property(e => e.PaymentTransactionId)
+                .HasComment("결제트랜잭션고유번호")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("paymentTransactionId");
+            entity.Property(e => e.RefundAmount)
+                .HasComment("결제취소금액")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("refundAmount");
+            entity.Property(e => e.RefundComment)
+                .HasMaxLength(24)
+                .HasComment("환불메시지")
+                .HasColumnName("refundComment")
+                .UseCollation("utf8mb4_bin");
+            entity.Property(e => e.RefundTime)
+                .HasComment("결제취소시간")
+                .HasColumnType("datetime")
+                .HasColumnName("refundTime");
+            entity.Property(e => e.RefundTransactionId)
+                .HasComment("환불트랜잭션고유번호")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("refundTransactionId");
+            entity.Property(e => e.Status)
+                .HasComment("결제상태")
+                .HasColumnType("enum('paid','refunded')")
+                .HasColumnName("status")
+                .UseCollation("utf8mb4_bin");
+            entity.Property(e => e.UserBalanceId)
+                .HasComment("걸제자잔고고유번호")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("userBalanceId");
+            entity.Property(e => e.UserId)
+                .HasComment("결제자")
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("userId");
+
+            entity.HasOne(d => d.BoothBalance).WithMany(p => p.EoullimPaymentBoothBalances)
+                .HasForeignKey(d => d.BoothBalanceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("EOULLIM_PAYMENTS_BOOTH_BALANCE_ID_FK");
+
+            entity.HasOne(d => d.Booth).WithMany(p => p.EoullimPayments)
+                .HasForeignKey(d => d.BoothId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("EOULLIM_PAYMENTS_BOOTH_ID_FK");
+
+            entity.HasOne(d => d.UserBalance).WithMany(p => p.EoullimPaymentUserBalances)
+                .HasForeignKey(d => d.UserBalanceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("EOULLIM_PAYMENTS_USER_BALANCE_ID_FK");
+
+            entity.HasOne(d => d.User).WithMany(p => p.EoullimPayments)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("EOULLIM_PAYMENTS_USER_ID_FK");
+        });
+
+        modelBuilder.Entity<EoullimTransaction>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable(tb => tb.HasComment("한세어울림한마당 이체 내역"));
 
             entity.HasIndex(e => e.ReceiverId, "RECEIVER_BALANCE_FK");
 
@@ -140,23 +244,23 @@ public partial class HanumContext : DbContext
             entity.Property(e => e.ReceiverId)
                 .HasComment("수신자 ID")
                 .HasColumnType("bigint(20) unsigned")
-                .HasColumnName("receiver_id");
+                .HasColumnName("receiverId");
             entity.Property(e => e.SenderId)
                 .HasComment("송금자 ID, 환전소의 경우 NULL로 설정")
                 .HasColumnType("bigint(20) unsigned")
-                .HasColumnName("sender_id");
+                .HasColumnName("senderId");
             entity.Property(e => e.Time)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasComment("트랜잭션 시간")
                 .HasColumnType("datetime")
                 .HasColumnName("time");
 
-            entity.HasOne(d => d.Receiver).WithMany(p => p.TransactionReceivers)
+            entity.HasOne(d => d.Receiver).WithMany(p => p.EoullimTransactionReceivers)
                 .HasForeignKey(d => d.ReceiverId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("RECEIVER_BALANCE_FK");
 
-            entity.HasOne(d => d.Sender).WithMany(p => p.TransactionSenders)
+            entity.HasOne(d => d.Sender).WithMany(p => p.EoullimTransactionSenders)
                 .HasForeignKey(d => d.SenderId)
                 .HasConstraintName("SENDER_BALANCE_FK");
         });

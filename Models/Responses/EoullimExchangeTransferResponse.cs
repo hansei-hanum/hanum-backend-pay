@@ -1,9 +1,9 @@
 namespace Models.Responses;
 
 /// <summary>
-/// 환전 송금 응답 DTO
+/// 한세어울림한마당 환전충전 트랜잭션정보
 /// </summary>
-public class ExchangeTransferResponse {
+public class EoullimExchangeTransferResponse {
     /// <summary>
     /// 시스템 총 환전 금액
     /// </summary>
@@ -11,5 +11,5 @@ public class ExchangeTransferResponse {
     /// <summary>
     /// 결제 트랜잭션 정보
     /// </summary>
-    public required TransactionInfo Transaction { get; set; }
+    public required EoullimTransactionDetail Transaction { get; set; }
 }
