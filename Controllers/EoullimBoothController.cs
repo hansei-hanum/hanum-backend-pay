@@ -21,17 +21,22 @@ public partial class EoullinBoothController : ControllerBase {
         _context = context;
     }
 
-    [HttpGet("payment/history")]
-    public async Task<APIResponse<EoullimBoothPaymentHistoryResponse>> GetPaymentHistory(
+    [HttpGet("payment/detail")]
+    public async Task<APIResponse<EoullimBoothPaymentDetailResponse>> GetPaymentDetail(
         [FromQuery] int page = 1,
         [FromQuery] int limit = 20
     ) {
         var boothId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-        return APIResponse<EoullimBoothPaymentHistoryResponse>.FromData(new() {
+        return APIResponse<EoullimBoothPaymentDetailResponse>.FromData(new() {
             Page = page,
             Limit = limit,
             Total = await _context.EoullimPayments.CountAsync(p => p.BoothId == boothId),
+            BalanceAmount = await (
+                    from b in _context.EoullimBalances
+                    where b.BoothId == boothId
+                    select b.Amount
+                ).FirstOrDefaultAsync(),
             Payments = await (
                     from p in _context.EoullimPayments
                     where p.BoothId == boothId
