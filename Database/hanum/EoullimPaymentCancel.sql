@@ -38,9 +38,9 @@ BEGIN
     START transaction;
     
 	 -- 결제 내역을 잠금
-    SELECT `status`, `userId`, `boothId`, `userBalanceId`, `boothBalanceId`, `paidAmount`
+    SELECT E.`status`, E.`userId`, E.`boothId`, E.`userBalanceId`, E.`boothBalanceId`, E.`paidAmount`
 	     INTO paymentStatus, userId, boothId, userBalanceId, boothBalanceId, paidAmount
-		  FROM `EoullimPayments`
+		  FROM `EoullimPayments` AS E
 		  WHERE id = paymentId FOR UPDATE;
     
     -- 결제내역 존재 여부 확인

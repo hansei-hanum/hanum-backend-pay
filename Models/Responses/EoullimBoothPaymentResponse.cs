@@ -19,9 +19,13 @@ public partial class EoullimBoothPayment {
     /// </summary>
     public ulong Id { get; set; }
     /// <summary>
-    /// 결제자
+    /// 결제자고유번호
     /// </summary>
     public ulong UserId { get; set; }
+    /// <summary>
+    /// 결제자이름
+    /// </summary>
+    public required string UserName { get; set; }
     /// <summary>
     /// 결제대상
     /// </summary>

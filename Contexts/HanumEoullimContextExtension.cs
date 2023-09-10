@@ -1,6 +1,5 @@
 using System.Data;
 using System.Data.Common;
-using HanumPay.Models;
 using HanumPay.Models.Results;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
@@ -81,6 +80,66 @@ static class HanumEoullimContextExtension {
             });
         } catch (MySqlException ex) when (ex.SqlState == "45000") {
             return StoredProcedureResult<EoullimPaymentResult>.FromError(ex.Message);
+        } finally {
+            await context.Database.CloseConnectionAsync();
+        }
+    }
+
+    /// <summary>
+    /// 한세어울림한마당 부스환불
+    /// 부스고유번호 검증이 없으므로 주의하여 사용하십시오.
+    /// </summary>
+    /// <param name="context">DB 컨텍스트</param>
+    /// <param name="paymentId">결제 ID</param>
+    /// <param name="message">메시지</param>
+    /// <returns>환불 결과</returns>
+    public static async Task<StoredProcedureResult<EoullimRefundResult>> EoullimPaymentCancel(
+        this HanumContext context, ulong paymentId, string? message = null) {
+        using var command = context.Database.GetDbConnection().CreateCommand();
+        command.CommandText = "EoullimPaymentCancel";
+        command.CommandType = CommandType.StoredProcedure;
+        command.Parameters.AddInputParameters(
+            ("@paymentId", paymentId),
+            ("@message", message)
+        ).Count();
+
+        var parameters = command.Parameters.AddOutputParameters(
+            ("@transactionId", MySqlDbType.UInt64),
+            ("@transactionTime", MySqlDbType.DateTime),
+            ("@userId", MySqlDbType.UInt64),
+            ("@boothId", MySqlDbType.UInt64),
+            ("@userBalanceId", MySqlDbType.UInt64),
+            ("@boothBalanceId", MySqlDbType.UInt64),
+            ("@userBalanceAmount", MySqlDbType.UInt64),
+            ("@boothBalanceAmount", MySqlDbType.UInt64),
+            ("@paidAmount", MySqlDbType.UInt64),
+            ("@refundedAmount", MySqlDbType.UInt64)
+        ).ToArray();
+
+        await context.Database.OpenConnectionAsync();
+
+        try {
+            await command.ExecuteNonQueryAsync();
+
+            return StoredProcedureResult<EoullimRefundResult>.FromData(new() {
+                Id = paymentId,
+                UserId = (ulong)parameters[2].Value!,
+                BoothId = (ulong)parameters[3].Value!,
+                PaidAmount = (ulong)parameters[8].Value!,
+                RefundedAmount = (ulong)parameters[9].Value!,
+                Transaction = new() {
+                    Id = (ulong)parameters[0].Value!,
+                    Time = (DateTime)parameters[1].Value!,
+                    SenderId = (ulong?)EnsureNull(parameters[4].Value)!,
+                    ReceiverId = (ulong)parameters[5].Value!,
+                    SenderAmount = (ulong?)EnsureNull(parameters[6].Value!),
+                    ReceiverAmount = (ulong)parameters[7].Value!,
+                    TransferAmount = (ulong)parameters[9].Value!,
+                    Message = message
+                }
+            });
+        } catch (MySqlException ex) when (ex.SqlState == "45000") {
+            return StoredProcedureResult<EoullimRefundResult>.FromError(ex.Message);
         } finally {
             await context.Database.CloseConnectionAsync();
         }
