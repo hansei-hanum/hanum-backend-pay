@@ -4,13 +4,14 @@ using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.Responses;
 
 namespace HanumPay.Controllers;
 
 [Authorize(AuthenticationSchemes = "HanumAuth")]
 [ApiController]
-[Route("eoullim/balances")]
+[Route("eoullim/balance")]
 public class EoullimPaymentController : ControllerBase {
     readonly ILogger<EoullimPaymentController> _logger;
     readonly HanumContext _context;
@@ -18,6 +19,46 @@ public class EoullimPaymentController : ControllerBase {
     public EoullimPaymentController(ILogger<EoullimPaymentController> logger, HanumContext context) {
         _logger = logger;
         _context = context;
+    }
+
+    [HttpGet("detail")]
+    public async Task<APIResponse<EoullimUserPaymentDetailResponse>> GetBalanceDetail(
+        [FromQuery] int page = 1,
+        [FromQuery] int limit = 20
+    ) {
+        var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        return APIResponse<EoullimUserPaymentDetailResponse>.FromData(new() {
+            Page = page,
+            Limit = limit,
+            Total = await _context.EoullimPayments.CountAsync(p => p.UserId == userId),
+            BalanceAmount = await (
+                    from b in _context.EoullimBalances
+                    where b.UserId == userId
+                    select b.Amount
+                ).FirstOrDefaultAsync(),
+            Payments = await (
+                    from p in _context.EoullimPayments
+                    where p.UserId == userId
+                    orderby p.Id descending
+                    select new EoullimUserPayment {
+                        Id = p.Id,
+                        UserId = p.UserId,
+                        BoothId = p.BoothId,
+                        BoothName = p.Booth.Name,
+                        PaidAmount = p.PaidAmount,
+                        RefundedAmount = p.RefundedAmount,
+                        PaymentComment = p.PaymentComment,
+                        RefundComment = p.RefundComment,
+                        Status = p.Status,
+                        PaidTime = p.PaidTime,
+                        RefundedTime = p.RefundedTime
+                    }
+                )
+                .Skip((page - 1) * limit)
+                .Take(limit)
+                .ToListAsync()
+        });
     }
 
     [HttpPost("payment")]
