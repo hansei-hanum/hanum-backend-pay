@@ -38,7 +38,7 @@ public class EoullimExchangeController : ControllerBase {
         }
 
         var exchangeResult = await _context.EoullimPersonalBalanceCharge(
-            userId: userId,
+            userId: transferRequest.UserId,
             transferAmount: transferRequest.Amount,
             message: transferRequest.Message
         );

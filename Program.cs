@@ -2,6 +2,7 @@ using Auth;
 using HanumPay.Contexts;
 using HanumPay.Core;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Console;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DB Context
-builder.Services.AddDbContext<HanumContext>();
+var databaseConfig = builder.Configuration.GetSection("Database");
+
+builder.Services.AddDbContextPool<HanumContext>(options => {
+    var connectionString = builder.Configuration.GetConnectionString("Database.SQL");
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString),
+        options => options.EnableRetryOnFailure(
+            maxRetryCount: databaseConfig.GetValue<int>("MaxRetryCount"),
+            maxRetryDelay: TimeSpan.FromSeconds(databaseConfig.GetValue<int>("MaxRetryDelay")),
+            errorNumbersToAdd: null
+        )
+    );
+}, databaseConfig.GetValue<int>("MaxPoolSize"));
 // Redis Cache
 builder.Services.AddStackExchangeRedisCache(options => {
     options.Configuration = builder.Configuration.GetConnectionString("Cache.Redis");
@@ -48,3 +62,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

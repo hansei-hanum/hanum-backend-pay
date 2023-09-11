@@ -2,7 +2,7 @@
 .vscode
 bin
 obj
-appsettings.json
+appsettings.Production.json
 appsettings.Development.json
 Properties/PublishProfiles
 *.user

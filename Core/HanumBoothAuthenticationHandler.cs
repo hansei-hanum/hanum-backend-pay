@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HanumPay.Core;
 
 public class HanumBoothAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
+    private readonly bool _bypassAuth;
     private readonly HanumContext _context;
     private readonly IDistributedCache _cache;
 
@@ -18,10 +19,12 @@ public class HanumBoothAuthenticationHandler : AuthenticationHandler<Authenticat
         UrlEncoder encoder,
         ISystemClock clock,
         HanumContext context,
-        IDistributedCache cache
+        IDistributedCache cache,
+        IConfiguration configuration
     ) : base(options, logger, encoder, clock) {
         _context = context;
         _cache = cache;
+        _bypassAuth = configuration.GetValue<bool>("BypassAuth");
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync() {
@@ -30,9 +33,12 @@ public class HanumBoothAuthenticationHandler : AuthenticationHandler<Authenticat
         if (token.Length != 2 || token[0] != "Bearer")
             return AuthenticateResult.Fail("Token is missing");
 
-        var boothId = await _cache.GetStringAsync($"booth:{token[1]}");
+        string? boothId = !_bypassAuth ? await _cache.GetStringAsync($"booth:{token[1]}") : token[1];
 
-        if (boothId is null) {
+        if (_bypassAuth) {
+            if (!ulong.TryParse(boothId, out _))
+                return AuthenticateResult.Fail("Token is invalid");
+        } else if (boothId is null) {
             var boothInfo = await _context.EoullimBooths.FirstOrDefaultAsync(booth => booth.Token == token[1]);
 
             if (boothInfo is null)
