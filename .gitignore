@@ -4,5 +4,7 @@ bin
 obj
 appsettings.json
 appsettings.Development.json
+Properties/PublishProfiles
+*.user
 
 .fake

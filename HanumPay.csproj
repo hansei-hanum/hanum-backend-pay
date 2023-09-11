@@ -30,4 +30,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <Target Name="CreateLogsFolder" AfterTargets="Publish">
+    <MakeDir Directories="$(PublishDir)logs"
+      Condition="!Exists('$(PublishDir)logs')" />
+  </Target>
 </Project>
