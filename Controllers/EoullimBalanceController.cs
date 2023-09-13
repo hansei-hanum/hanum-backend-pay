@@ -9,6 +9,9 @@ using Models.Responses;
 
 namespace HanumPay.Controllers;
 
+/// <summary>
+/// 한세어울림한마당 사용자잔고
+/// </summary>
 [Authorize(AuthenticationSchemes = "HanumAuth")]
 [ApiController]
 [Route("eoullim/balance")]
@@ -16,11 +19,37 @@ public class EoullimPaymentController : ControllerBase {
     readonly ILogger<EoullimPaymentController> _logger;
     readonly HanumContext _context;
 
+    /// <summary>
+    /// 한세어울림한마당 사용자잔고 생성자
+    /// </summary>
     public EoullimPaymentController(ILogger<EoullimPaymentController> logger, HanumContext context) {
         _logger = logger;
         _context = context;
     }
 
+    /// <summary>
+    /// 한세어울림한마당 사용자잔액조회
+    /// </summary>
+    /// <returns>사용자잔액조회응답</returns>
+    [HttpGet("amount")]
+    public async Task<APIResponse<EoullimBalanceAmountResponse>> GetBalanceAmount() {
+        var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        return APIResponse<EoullimBalanceAmountResponse>.FromData(new() {
+            BalanceAmount = await (
+                    from b in _context.EoullimBalances
+                    where b.UserId == userId
+                    select b.Amount
+                ).FirstOrDefaultAsync()
+        });
+    }
+
+    /// <summary>
+    /// 한세어울림한마당 사용자잔액상세조회
+    /// </summary>
+    /// <param name="page">페이지</param>
+    /// <param name="limit">페이지당 항목수</param>
+    /// <returns>사용자잔액상세조회응답</returns>
     [HttpGet("detail")]
     public async Task<APIResponse<EoullimUserPaymentDetailResponse>> GetBalanceDetail(
         [FromQuery] int page = 1,
@@ -61,6 +90,11 @@ public class EoullimPaymentController : ControllerBase {
         });
     }
 
+    /// <summary>
+    /// 한세어울림한마당 결제요청
+    /// </summary>
+    /// <param name="paymentRequest">결제요청</param>
+    /// <returns>결제응답</returns>
     [HttpPost("payment")]
     public async Task<APIResponse<EoullimPaymentResponse>> PostPayment([FromBody] EoullimPaymentRequest paymentRequest) {
         var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);

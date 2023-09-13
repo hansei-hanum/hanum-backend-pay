@@ -8,6 +8,9 @@ using Models.Responses;
 
 namespace HanumPay.Controllers;
 
+/// <summary>
+/// 한세어울림한마당환전소
+/// </summary>
 [Authorize(AuthenticationSchemes = "HanumAuth")]
 [ApiController]
 [Route("eoullim/exchange")]
@@ -16,6 +19,9 @@ public class EoullimExchangeController : ControllerBase {
     readonly HanumContext _context;
     readonly HashSet<ulong> _allowedUsers;
 
+    /// <summary>
+    /// 한세어울림한마당환전소 생성자
+    /// </summary>
     public EoullimExchangeController(
         ILogger<EoullimExchangeController> logger,
         HanumContext context,
@@ -27,6 +33,11 @@ public class EoullimExchangeController : ControllerBase {
             .GetSection("Exchange").Get<ulong[]>()!);
     }
 
+    /// <summary>
+    /// 한세어울림한마당사용자잔고충전
+    /// </summary>
+    /// <param name="transferRequest">환전요청</param>
+    /// <returns>환전응답</returns>
     [HttpPost("transfer")]
     public async Task<APIResponse<EoullimExchangeTransferResponse>> PostTransfer([FromBody] EoullimExchangeTransferRequest transferRequest) {
         var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);

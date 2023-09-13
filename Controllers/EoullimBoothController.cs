@@ -9,6 +9,9 @@ using Models.Responses;
 
 namespace HanumPay.Controllers;
 
+/// <summary>
+/// 한세어울림한마당 부스
+/// </summary>
 [Authorize(AuthenticationSchemes = "HanumBoothAuth")]
 [ApiController]
 [Route("eoullim/booth")]
@@ -16,11 +19,20 @@ public partial class EoullinBoothController : ControllerBase {
     readonly ILogger<EoullinBoothController> _logger;
     readonly HanumContext _context;
 
+    /// <summary>
+    /// 한세어울림한마당 부스 생성자
+    /// </summary>
     public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) {
         _logger = logger;
         _context = context;
     }
 
+    /// <summary>
+    /// 한세어울림한마당부스잔고조회
+    /// </summary>
+    /// <param name="page">페이지</param>
+    /// <param name="limit">페이지당 항목수</param>
+    /// <returns></returns>
     [HttpGet("payment/detail")]
     public async Task<APIResponse<EoullimBoothPaymentDetailResponse>> GetPaymentDetail(
         [FromQuery] int page = 1,
@@ -61,6 +73,11 @@ public partial class EoullinBoothController : ControllerBase {
         });
     }
 
+    /// <summary>
+    /// 한세어울림한마당환불요청
+    /// </summary>
+    /// <param name="refundRequest">환불요청</param>
+    /// <returns>환불응답</returns>
     [HttpPost("payment/refund")]
     public async Task<APIResponse<EoullimBoothRefundResponse>> PostRefundHistory(
         [FromBody] EoullimBoothRefundRequest refundRequest) {
@@ -107,6 +124,5 @@ public partial class EoullinBoothController : ControllerBase {
                 Time = transaction.Time
             }
         });
-
     }
 }

@@ -2,6 +2,9 @@ using HanumPay.Models.Responses;
 
 namespace Models.Responses;
 
+/// <summary>
+/// 한세어울림한마당부스순위
+/// </summary>
 public class EoullimBoothRankResponse : APIPagenationResponse {
     /// <summary>
     /// 부스순위
@@ -13,6 +16,9 @@ public class EoullimBoothRankResponse : APIPagenationResponse {
     public required bool Descending { get; set; }
 }
 
+/// <summary>
+/// 한세어울림한마당부스순위항목
+/// </summary>
 public class EoullimBoothRankItem {
     /// <summary>
     /// 부스고유번호

@@ -1,4 +1,3 @@
-using HanumPay.Models;
 using HanumPay.Models.Responses;
 
 namespace Models.Responses;
