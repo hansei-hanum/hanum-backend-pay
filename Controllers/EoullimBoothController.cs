@@ -11,7 +11,7 @@ namespace HanumPay.Controllers;
 
 [Authorize(AuthenticationSchemes = "HanumBoothAuth")]
 [ApiController]
-[Route("booth")]
+[Route("eoullim/booth")]
 public partial class EoullinBoothController : ControllerBase {
     readonly ILogger<EoullinBoothController> _logger;
     readonly HanumContext _context;

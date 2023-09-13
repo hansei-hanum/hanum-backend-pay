@@ -35,6 +35,7 @@ public class HanumBoothAuthenticationHandler : AuthenticationHandler<Authenticat
 
         string? boothId = !_bypassAuth ? await _cache.GetStringAsync($"booth:{token[1]}") : token[1];
 
+
         if (_bypassAuth) {
             if (!ulong.TryParse(boothId, out _))
                 return AuthenticateResult.Fail("Token is invalid");

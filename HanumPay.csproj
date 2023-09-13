@@ -7,9 +7,11 @@
     <UserSecretsId>bf55e637-be9a-4ffe-9a1f-ad64426930c5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.HelpPage" Version="5.2.9" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.10" />
     <Protobuf Include="Protos\auth.proto" GrpcServices="Client" />
 
@@ -31,7 +33,6 @@
   </ItemGroup>
 
   <Target Name="CreateLogsFolder" AfterTargets="Publish">
-    <MakeDir Directories="$(PublishDir)logs"
-      Condition="!Exists('$(PublishDir)logs')" />
+    <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
   </Target>
 </Project>

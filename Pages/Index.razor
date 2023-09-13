@@ -1,0 +1,79 @@
+@page "/"
+@inject HanumPay.Services.EoullimBoothService BoothService
+
+<div class="dashboard">
+    <div>
+        <div class="header">
+            <img src="/assets/hanum-logo.svg" class="hanum-logo" />
+            <span class="time-remaining">부스 종료까지
+                @{
+                    TimeSpan remaining = BoothEventEndTime.Subtract(DateTime.Now.TimeOfDay);
+                }
+                @if (remaining.TotalSeconds > 0)
+                {
+                    <span>@remaining.ToString("hh\\:mm\\:ss")</span>
+                }
+                else
+                {
+                    <span>00:00:00</span>
+                }
+
+            </span>
+        </div>
+        <div class="content">
+            <HanumPay.Shared.Components.BarChart Items="Items" />
+            <span>실시간 부스 순위</span>
+        </div>
+    </div>
+    <div>
+        <img src="/assets/booth-map.png" class="booth-map" />
+        <div class="time">
+            <span>@DateTime.Now.ToString("HH:mm:ss")</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    private TimeSpan BoothEventEndTime = new TimeSpan(0, 16, 10, 0);
+    private Timer? _timeTimer, _dashboardTimer;
+
+    List<Shared.Components.BarChart.Item> Items = new() {
+new Shared.Components.BarChart.Item { Label = "", Value = 0, IsPrimary = true },
+new Shared.Components.BarChart.Item { Label = "", Value = 0 },
+new Shared.Components.BarChart.Item { Label = "", Value = 0 },
+new Shared.Components.BarChart.Item { Label = "", Value = 0 },
+new Shared.Components.BarChart.Item { Label = "", Value = 0 },
+};
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _timeTimer = new Timer(OnTimeTick, null, 0, 1000);
+        _dashboardTimer = new Timer(OnDashboardTick, null, 0, 10000);
+    }
+
+    private void OnTimeTick(object? sender)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async void OnDashboardTick(object? sender)
+    {
+        Items = (await BoothService.GetBoothRankingAsync(limit: 6)).Ranks.Select(
+        rank => new Shared.Components.BarChart.Item
+            {
+                Label = rank.Name,
+                Value = (int)rank.Amount,
+                IsPrimary = rank.Rank == 1
+            }
+        ).ToList();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _timeTimer?.Dispose();
+        _dashboardTimer?.Dispose();
+    }
+}
