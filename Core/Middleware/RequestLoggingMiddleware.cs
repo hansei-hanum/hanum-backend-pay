@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace HanumPay.Core;
+namespace HanumPay.Core.Middleware;
 
 public class RequestLoggingMiddleware {
     private readonly RequestDelegate _next;

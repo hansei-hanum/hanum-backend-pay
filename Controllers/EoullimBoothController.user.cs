@@ -1,3 +1,4 @@
+using HanumPay.Core.Authentication;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ public partial class EoullinBoothController : ControllerBase {
     /// </summary>
     /// <param name="boothId">부스고유번호</param>
     /// <returns>부스정보조회응답</returns>
-    [Authorize(AuthenticationSchemes = "HanumAuth")]
+    [Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
     [HttpGet("{boothId}")]
     public async Task<APIResponse<EoullimBoothInfoResponse>> GetBoothInfo([FromRoute] ulong boothId) {
         var boothInfo = await _context.EoullimBooths.FindAsync(boothId);
@@ -34,7 +35,7 @@ public partial class EoullinBoothController : ControllerBase {
     /// </summary>
     /// <param name="boothId">부스고유번호</param>
     /// <returns>부스상세정보조회응답</returns>
-    [Authorize(AuthenticationSchemes = "HanumAuth")]
+    [Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
     [HttpGet("{boothId}/detail")]
     public async Task<APIResponse<EoullimBoothDetailResponse>> GetBoothDetail([FromRoute] ulong boothId) {
         var boothInfo = await _context.EoullimBooths.FindAsync(boothId);

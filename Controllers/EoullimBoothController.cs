@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using HanumPay.Contexts;
+using HanumPay.Core.Authentication;
 using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Responses;
@@ -12,19 +14,21 @@ namespace HanumPay.Controllers;
 /// <summary>
 /// 한세어울림한마당 부스
 /// </summary>
-[Authorize(AuthenticationSchemes = "HanumBoothAuth")]
+[Authorize(AuthenticationSchemes = HanumBoothAuthenticationHandler.SchemeName)]
 [ApiController]
 [Route("eoullim/booth")]
 public partial class EoullinBoothController : ControllerBase {
-    readonly ILogger<EoullinBoothController> _logger;
-    readonly HanumContext _context;
+    private readonly ILogger<EoullinBoothController> _logger;
+    private readonly HanumContext _context;
+    private readonly SignInManager<ClaimsPrincipal> _signInManager;
 
     /// <summary>
     /// 한세어울림한마당 부스 생성자
     /// </summary>
-    public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) {
+    public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context, SignInManager<ClaimsPrincipal> signInManager) {
         _logger = logger;
         _context = context;
+        _signInManager = signInManager;
     }
 
     /// <summary>

@@ -5,10 +5,14 @@ using Microsoft.Extensions.Options;
 using HanumPay.Contexts;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
-namespace HanumPay.Core;
+namespace HanumPay.Core.Authentication;
 
 public class HanumBoothAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
+    public const string SchemeName = "HanumBoothAuth";
+    public const string CookieName = "EoullimBoothToken";
+
     private readonly bool _bypassAuth;
     private readonly HanumContext _context;
     private readonly IDistributedCache _cache;
@@ -28,13 +32,19 @@ public class HanumBoothAuthenticationHandler : AuthenticationHandler<Authenticat
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync() {
-        var token = Request.Headers.Authorization.ToString().Split(" ");
+        var tokenString = Request.Headers.Authorization.ToString();
+
+        if (string.IsNullOrEmpty(tokenString))
+            tokenString = Request.Cookies[CookieName] ?? string.Empty;
+
+        Console.WriteLine("sdfghjkiuytf" + tokenString);
+
+        var token = tokenString.Split(" ");
 
         if (token.Length != 2 || token[0] != "Bearer")
             return AuthenticateResult.Fail("Token is missing");
 
         string? boothId = !_bypassAuth ? await _cache.GetStringAsync($"booth:{token[1]}") : token[1];
-
 
         if (_bypassAuth) {
             if (!ulong.TryParse(boothId, out _))

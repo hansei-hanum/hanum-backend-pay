@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HanumPay.Contexts;
+using HanumPay.Core.Authentication;
 using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ namespace HanumPay.Controllers;
 /// <summary>
 /// 한세어울림한마당환전소
 /// </summary>
-[Authorize(AuthenticationSchemes = "HanumAuth")]
+[Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
 [ApiController]
 [Route("eoullim/exchange")]
 public class EoullimExchangeController : ControllerBase {

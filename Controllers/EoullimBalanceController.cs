@@ -1,8 +1,10 @@
 using System.Security.Claims;
 using HanumPay.Contexts;
+using HanumPay.Core.Authentication;
 using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.Responses;
@@ -12,12 +14,12 @@ namespace HanumPay.Controllers;
 /// <summary>
 /// 한세어울림한마당 사용자잔고
 /// </summary>
-[Authorize(AuthenticationSchemes = "HanumAuth")]
+[Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
 [ApiController]
 [Route("eoullim/balance")]
 public class EoullimPaymentController : ControllerBase {
-    readonly ILogger<EoullimPaymentController> _logger;
-    readonly HanumContext _context;
+    private readonly ILogger<EoullimPaymentController> _logger;
+    private readonly HanumContext _context;
 
     /// <summary>
     /// 한세어울림한마당 사용자잔고 생성자

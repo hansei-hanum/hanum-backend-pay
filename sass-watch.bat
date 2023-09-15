@@ -1,0 +1,1 @@
+sass --watch ./wwwroot --style compressed

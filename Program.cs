@@ -1,8 +1,8 @@
 using System.Reflection;
 using Auth;
 using HanumPay.Contexts;
-using HanumPay.Core;
-using HanumPay.Services;
+using HanumPay.Core.Authentication;
+using HanumPay.Core.Middleware;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Console;
@@ -60,18 +60,17 @@ builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options => {
 
 // Authentication Handler
 builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>("HanumAuth", null)
-    .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>("HanumBoothAuth", null);
-
-builder.Services.AddTransient<EoullimBoothService>();
+    .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>(HanumAuthenticationHandler.SchemeName, null)
+    .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>(HanumBoothAuthenticationHandler.SchemeName, null);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
+} else {
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseMiddleware<RequestLoggingMiddleware>();

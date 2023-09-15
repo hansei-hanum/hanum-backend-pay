@@ -4,9 +4,11 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
-namespace HanumPay.Core;
+namespace HanumPay.Core.Authentication;
 
 public class HanumAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
+    public const string SchemeName = "HanumAuth";
+
     private readonly bool _bypassAuth;
     private readonly AuthService.AuthServiceClient _authServiceClient;
 

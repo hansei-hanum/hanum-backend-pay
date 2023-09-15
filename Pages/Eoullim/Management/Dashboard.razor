@@ -1,4 +1,5 @@
-@page "/eoullim/system/dashboard"
+@page "/eoullim/manage/dashboard"
+@using HanumPay.Shared.Components
 @inject HanumPay.Services.EoullimBoothService BoothService
 
 <div class="dashboard">
@@ -21,7 +22,7 @@
             </span>
         </div>
         <div class="content">
-            <HanumPay.Shared.Components.BarChart Items="Items" />
+            <BarChart Items="Items" />
             <span>실시간 부스 순위</span>
         </div>
     </div>
@@ -37,12 +38,12 @@
     private TimeSpan BoothEventEndTime = new TimeSpan(0, 16, 10, 0);
     private Timer? _timeTimer, _dashboardTimer;
 
-    List<Shared.Components.BarChart.Item> Items = new() {
-new Shared.Components.BarChart.Item { Label = "", Value = 0, IsPrimary = true },
-new Shared.Components.BarChart.Item { Label = "", Value = 0 },
-new Shared.Components.BarChart.Item { Label = "", Value = 0 },
-new Shared.Components.BarChart.Item { Label = "", Value = 0 },
-new Shared.Components.BarChart.Item { Label = "", Value = 0 },
+    List<BarChart.Item> Items = new() {
+new BarChart.Item { Label = "", Value = 0, IsPrimary = true },
+new BarChart.Item { Label = "", Value = 0 },
+new BarChart.Item { Label = "", Value = 0 },
+new BarChart.Item { Label = "", Value = 0 },
+new BarChart.Item { Label = "", Value = 0 },
 };
 
     protected async override Task OnInitializedAsync()
