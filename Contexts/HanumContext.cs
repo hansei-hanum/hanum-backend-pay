@@ -5,13 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HanumPay.Contexts;
 
-public partial class HanumContext : DbContext {
-    public HanumContext() {
-    }
-
-
+public partial class HanumContext : DbContext
+{
     public HanumContext(DbContextOptions<HanumContext> options)
-        : base(options) {
+        : base(options)
+    {
     }
 
     public virtual DbSet<EoullimBalance> EoullimBalances { get; set; }
@@ -24,12 +22,16 @@ public partial class HanumContext : DbContext {
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    public virtual DbSet<VerificationKey> VerificationKeys { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         modelBuilder
             .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
 
-        modelBuilder.Entity<EoullimBalance>(entity => {
+        modelBuilder.Entity<EoullimBalance>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity
@@ -75,7 +77,8 @@ public partial class HanumContext : DbContext {
                 .HasConstraintName("USER_ID_FK");
         });
 
-        modelBuilder.Entity<EoullimBooth>(entity => {
+        modelBuilder.Entity<EoullimBooth>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 부스"));
@@ -115,7 +118,8 @@ public partial class HanumContext : DbContext {
                 .HasColumnName("updatedAt");
         });
 
-        modelBuilder.Entity<EoullimPayment>(entity => {
+        modelBuilder.Entity<EoullimPayment>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 결제내역"));
@@ -210,7 +214,8 @@ public partial class HanumContext : DbContext {
                 .HasConstraintName("EOULLIM_PAYMENTS_USER_ID_FK");
         });
 
-        modelBuilder.Entity<EoullimTransaction>(entity => {
+        modelBuilder.Entity<EoullimTransaction>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 이체 내역"));
@@ -255,7 +260,8 @@ public partial class HanumContext : DbContext {
                 .HasConstraintName("SENDER_BALANCE_FK");
         });
 
-        modelBuilder.Entity<User>(entity => {
+        modelBuilder.Entity<User>(entity =>
+        {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity
@@ -280,6 +286,56 @@ public partial class HanumContext : DbContext {
             entity.Property(e => e.Profile)
                 .HasMaxLength(100)
                 .HasColumnName("profile");
+        });
+
+        modelBuilder.Entity<VerificationKey>(entity =>
+        {
+            entity.HasKey(e => e.Key).HasName("PRIMARY");
+
+            entity
+                .ToTable("verification.keys")
+                .UseCollation("utf8mb4_bin");
+
+            entity.HasIndex(e => e.Key, "key").IsUnique();
+
+            entity.HasIndex(e => e.UserId, "user_id");
+
+            entity.Property(e => e.Key)
+                .HasMaxLength(6)
+                .HasColumnName("key");
+            entity.Property(e => e.Classroom)
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("classroom");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Department)
+                .HasColumnType("enum('CLOUD_SECURITY','NETWORK_SECURITY','HACKING_SECURITY','METAVERSE_GAME','GAME')")
+                .HasColumnName("department");
+            entity.Property(e => e.Grade)
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("grade");
+            entity.Property(e => e.Number)
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("number");
+            entity.Property(e => e.Type)
+                .HasColumnType("enum('STUDENT','TEACHER')")
+                .HasColumnName("type");
+            entity.Property(e => e.UsedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("used_at");
+            entity.Property(e => e.UserId)
+                .HasColumnType("bigint(20) unsigned")
+                .HasColumnName("user_id");
+            entity.Property(e => e.ValidUntil)
+                .HasColumnType("datetime")
+                .HasColumnName("valid_until");
+
+            entity.HasOne(d => d.User).WithMany(p => p.VerificationKeys)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("verification.keys_ibfk_1");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -20,5 +20,12 @@ public class EoullimBoothPaymentDetailResponse : APIPagenationResponse {
 /// 한세어울림한마당 결제내역
 /// </summary>
 public partial class EoullimBoothPayment : EoullimPayment {
+    /// <summary>
+    /// 사용자이름
+    /// </summary>
     public required string UserName { get; set; }
+    /// <summary>
+    /// 사용자신원정보
+    /// </summary>
+    public required UserRole? UserRole { get; set; }
 }

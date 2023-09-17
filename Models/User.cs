@@ -18,4 +18,6 @@ public partial class User
     public virtual EoullimBalance? EoullimBalance { get; set; }
 
     public virtual ICollection<EoullimPayment> EoullimPayments { get; set; } = new List<EoullimPayment>();
+
+    public virtual ICollection<VerificationKey> VerificationKeys { get; set; } = new List<VerificationKey>();
 }

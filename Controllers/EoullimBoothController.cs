@@ -66,7 +66,17 @@ public partial class EoullinBoothController : ControllerBase {
                         RefundComment = p.RefundComment,
                         Status = p.Status,
                         PaidTime = p.PaidTime,
-                        RefundedTime = p.RefundedTime
+                        RefundedTime = p.RefundedTime,
+                        UserRole = p.User.VerificationKeys.Select(
+                            vk => new UserRole {
+                                UserId = vk.UserId,
+                                Type = vk.Type,
+                                Department = vk.Department,
+                                Grade = vk.Grade,
+                                Classroom = vk.Classroom,
+                                Number = vk.Number
+                            }
+                        ).FirstOrDefault()
                     }
                 )
                 .Skip((page - 1) * limit)
