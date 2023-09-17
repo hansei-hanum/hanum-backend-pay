@@ -1,7 +1,7 @@
 using HanumPay.Contexts;
+using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models.Responses;
 
 namespace HanumPay.Services;
 

@@ -1,6 +1,4 @@
-using HanumPay.Models.Responses;
-
-namespace Models.Responses;
+namespace HanumPay.Models.Responses;
 
 /// <summary>
 /// 한세어울림한마당부스순위

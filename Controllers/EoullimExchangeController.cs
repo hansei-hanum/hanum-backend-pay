@@ -5,7 +5,6 @@ using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Responses;
 
 namespace HanumPay.Controllers;
 

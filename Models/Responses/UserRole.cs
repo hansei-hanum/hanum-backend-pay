@@ -3,7 +3,7 @@
 /// <summary>
 /// 사용자신원정보
 /// </summary>
-public class UserRole {
+public class UserRoleInfo {
     /// <summary>
     /// 사용자고유번호
     /// </summary>

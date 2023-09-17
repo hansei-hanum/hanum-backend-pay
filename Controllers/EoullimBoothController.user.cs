@@ -13,16 +13,16 @@ public partial class EoullinBoothController : ControllerBase {
     /// <returns>부스정보조회응답</returns>
     [Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
     [HttpGet("{boothId}")]
-    public async Task<APIResponse<EoullimBoothInfoResponse>> GetBoothInfo([FromRoute] ulong boothId) {
+    public async Task<APIResponse<EoullimBoothInfo>> GetBoothInfo([FromRoute] ulong boothId) {
         var boothInfo = await _context.EoullimBooths.FindAsync(boothId);
 
         if (boothInfo is null) {
             _logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
 
-            return APIResponse<EoullimBoothInfoResponse>.FromError("BOOTH_NOT_FOUND");
+            return APIResponse<EoullimBoothInfo>.FromError("BOOTH_NOT_FOUND");
         }
 
-        return APIResponse<EoullimBoothInfoResponse>.FromData(
+        return APIResponse<EoullimBoothInfo>.FromData(
             new() {
                 Id = boothInfo.Id,
                 Name = boothInfo.Name,

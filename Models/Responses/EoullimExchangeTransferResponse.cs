@@ -1,4 +1,5 @@
-namespace Models.Responses;
+
+namespace HanumPay.Models.Responses;
 
 /// <summary>
 /// 한세어울림한마당 환전충전 트랜잭션정보

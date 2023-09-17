@@ -1,11 +1,13 @@
-using HanumPay.Models.Responses;
-
-namespace Models.Responses;
+namespace HanumPay.Models.Responses;
 
 /// <summary>
 /// 한세어울림한마당 부스결제내역
 /// </summary>
 public class EoullimBoothPaymentDetailResponse : APIPagenationResponse {
+    /// <summary>
+    /// 부스정보
+    /// </summary>
+    public required EoullimBoothDetail BoothInfo { get; set; }
     /// <summary>
     /// 잔액
     /// </summary>
@@ -24,8 +26,8 @@ public partial class EoullimBoothPayment : EoullimPayment {
     /// 사용자이름
     /// </summary>
     public required string UserName { get; set; }
-    /// <summary>
-    /// 사용자신원정보
-    /// </summary>
-    public required UserRole? UserRole { get; set; }
+    // /// <summary>
+    // /// 사용자신원정보
+    // /// </summary>
+    // public required UserRoleInfo? UserRole { get; set; }
 }

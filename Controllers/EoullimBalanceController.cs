@@ -4,10 +4,8 @@ using HanumPay.Core.Authentication;
 using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models.Responses;
 
 namespace HanumPay.Controllers;
 
@@ -109,7 +107,7 @@ public class EoullimPaymentController : ControllerBase {
         if (!paymentResult.Success) {
             _logger.LogWarning("결제실패: {ErrorMessage} [결제자: {UserId}, 부스: {BoothId}, 금액: {Amount}]",
                 paymentResult.ErrorMessage ?? "Unknown", userId, paymentRequest.BoothId, paymentRequest.Amount);
-            
+
             Response.StatusCode = 400;
 
             return APIResponse<EoullimPaymentResponse>.FromError(paymentResult.ErrorCode ?? "UNKNOWN_ERROR");

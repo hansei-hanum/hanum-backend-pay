@@ -4,10 +4,8 @@ using HanumPay.Core.Authentication;
 using HanumPay.Models.Requests;
 using HanumPay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Models.Responses;
 
 namespace HanumPay.Controllers;
 
@@ -46,6 +44,16 @@ public partial class EoullinBoothController : ControllerBase {
             Page = page,
             Limit = limit,
             Total = await _context.EoullimPayments.CountAsync(p => p.BoothId == boothId),
+            BoothInfo = await (
+                    from b in _context.EoullimBooths
+                    where b.Id == boothId
+                    select new EoullimBoothDetail {
+                        Id = b.Id,
+                        Name = b.Name,
+                        Classification = b.Class,
+                        Location = b.Location
+                    }
+                ).FirstAsync(),
             BalanceAmount = await (
                     from b in _context.EoullimBalances
                     where b.BoothId == boothId
@@ -67,16 +75,16 @@ public partial class EoullinBoothController : ControllerBase {
                         Status = p.Status,
                         PaidTime = p.PaidTime,
                         RefundedTime = p.RefundedTime,
-                        UserRole = p.User.VerificationKeys.Select(
-                            vk => new UserRole {
-                                UserId = vk.UserId,
-                                Type = vk.Type,
-                                Department = vk.Department,
-                                Grade = vk.Grade,
-                                Classroom = vk.Classroom,
-                                Number = vk.Number
-                            }
-                        ).FirstOrDefault()
+                        // UserRole = p.User.VerificationKeys.Select(
+                        //     vk => new UserRole {
+                        //         UserId = vk.UserId,
+                        //         Type = vk.Type,
+                        //         Department = vk.Department,
+                        //         Grade = vk.Grade,
+                        //         Classroom = vk.Classroom,
+                        //         Number = vk.Number
+                        //     }
+                        // ).FirstOrDefault()
                     }
                 )
                 .Skip((page - 1) * limit)
