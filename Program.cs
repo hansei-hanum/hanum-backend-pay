@@ -19,6 +19,17 @@ builder.Services.AddLogging(logging =>
     })
 );
 
+builder.Services.AddCors(options => {
+    options.AddPolicy(
+        name: "AllowAll",
+        policyBuilder => {
+            policyBuilder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }
+    );
+});
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -69,15 +80,14 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHsts();
+    app.UseCors("AllowAll");
 } else {
     app.UseExceptionHandler("/Error");
 }
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

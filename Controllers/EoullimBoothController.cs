@@ -20,15 +20,13 @@ namespace HanumPay.Controllers;
 public partial class EoullinBoothController : ControllerBase {
     private readonly ILogger<EoullinBoothController> _logger;
     private readonly HanumContext _context;
-    private readonly SignInManager<ClaimsPrincipal> _signInManager;
 
     /// <summary>
     /// 한세어울림한마당 부스 생성자
     /// </summary>
-    public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context, SignInManager<ClaimsPrincipal> signInManager) {
+    public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) {
         _logger = logger;
         _context = context;
-        _signInManager = signInManager;
     }
 
     /// <summary>
