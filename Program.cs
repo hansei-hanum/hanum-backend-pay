@@ -3,6 +3,7 @@ using Auth;
 using HanumPay.Contexts;
 using HanumPay.Core.Authentication;
 using HanumPay.Core.Middleware;
+using HanumPay.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Console;
@@ -73,6 +74,8 @@ builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options => {
 builder.Services.AddAuthentication()
     .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>(HanumAuthenticationHandler.SchemeName, null)
     .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>(HanumBoothAuthenticationHandler.SchemeName, null);
+
+builder.Services.AddTransient<EoullimBoothService>();
 
 var app = builder.Build();
 
