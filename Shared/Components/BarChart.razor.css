@@ -23,13 +23,13 @@ li {
 }
 
 li>span {
-    font-size: 1.2rem;
+    font-size: 2rem;
     font-weight: 500;
     color: #172029;
 }
 
 li>span.value {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     color: #8b94a3;
 }
 
@@ -45,6 +45,5 @@ li.primary>div {
 }
 
 li.primary>span.value {
-    font-size: 1.5rem;
     color: #3182f7;
 }
