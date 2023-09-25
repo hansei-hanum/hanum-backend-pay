@@ -21,7 +21,10 @@ public class RequestLoggingMiddleware {
             var method = context.Request.Method;
             var statusCode = context.Response.StatusCode;
             var originalUrl = context.Request.Path + context.Request.QueryString;
-            var ip = context.Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? context.Connection.RemoteIpAddress?.ToString();
+            var ip =
+                context.Request.Headers["CF-Connecting-IP"].FirstOrDefault() ??
+                context.Request.Headers["X-Forwarded-For"].FirstOrDefault() ??
+                context.Connection.RemoteIpAddress?.ToString();
             var userAgent = context.Request.Headers["User-Agent"].FirstOrDefault();
             var duration = stopwatch.ElapsedMilliseconds;
 
