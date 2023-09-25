@@ -19,18 +19,22 @@ li {
     align-items: center;
     gap: 0.5rem;
     height: 100%;
-    width: 9%;
+    width: 12%;
 }
 
 li>span {
-    font-size: 2rem;
+    height: 7rem;
+    font-size: 1.6rem;
     font-weight: 500;
     color: #172029;
+    text-align: center;
 }
 
 li>span.value {
+    height: auto;
     font-size: 1.7rem;
     color: #8b94a3;
+    word-wrap:break-word
 }
 
 li>div {

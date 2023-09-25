@@ -6,9 +6,17 @@
 
 .dashboard>div {
     width: 50%;
-    display: grid;
-    justify-items: center;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard>div.left {
+    padding: 6rem;
+    padding-top: 8rem;
+}
+
+.dashboard>div.right {
+    padding: 4rem;
 }
 
 .dashboard .header {
@@ -17,7 +25,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 30%;
     padding: 0 1rem;
 }
 
@@ -25,10 +32,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     height: 100%;
     gap: 2rem;
-    padding-bottom: 8rem;
 }
 
 .dashboard .content>span {
