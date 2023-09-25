@@ -29,6 +29,14 @@ builder.Services.AddCors(options => {
                 .AllowAnyHeader();
         }
     );
+    options.AddPolicy(
+        name: "AllowCors",
+        policyBuilder => {
+            policyBuilder.WithOrigins(builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>()!)
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }
+    );
 });
 
 builder.Services.AddRazorPages();
@@ -86,6 +94,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseCors("AllowAll");
 } else {
     app.UseExceptionHandler("/Error");
+    app.UseCors("AllowCors");
 }
 
 app.UseMiddleware<RequestLoggingMiddleware>();
