@@ -1,0 +1,1049 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "HanumPay",
+        "version": "1.0"
+    },
+    "paths": {
+        "/eoullim/exchange/transfer": {
+            "post": {
+                "tags": [
+                    "EoullimExchange"
+                ],
+                "summary": "한세어울림한마당사용자잔고충전",
+                "requestBody": {
+                    "description": "환전요청",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimExchangeTransferRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimExchangeTransferRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimExchangeTransferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimExchangeTransferResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimExchangeTransferResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimExchangeTransferResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/balance/amount": {
+            "get": {
+                "tags": [
+                    "EoullimPayment"
+                ],
+                "summary": "한세어울림한마당 사용자잔액조회",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBalanceAmountResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBalanceAmountResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBalanceAmountResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/balance/detail": {
+            "get": {
+                "tags": [
+                    "EoullimPayment"
+                ],
+                "summary": "한세어울림한마당 사용자잔액상세조회",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "페이지",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "페이지당 항목수",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimUserPaymentDetailResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimUserPaymentDetailResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimUserPaymentDetailResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/balance/payment": {
+            "post": {
+                "tags": [
+                    "EoullimPayment"
+                ],
+                "summary": "한세어울림한마당 결제요청",
+                "requestBody": {
+                    "description": "결제요청",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimPaymentRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimPaymentRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimPaymentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimPaymentResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimPaymentResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimPaymentResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/booth/payment/detail": {
+            "get": {
+                "tags": [
+                    "EoullinBooth"
+                ],
+                "summary": "한세어울림한마당부스잔고조회",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "페이지",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "페이지당 항목수",
+                        "style": "form",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothPaymentDetailResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothPaymentDetailResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothPaymentDetailResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/booth/payment/refund": {
+            "post": {
+                "tags": [
+                    "EoullinBooth"
+                ],
+                "summary": "한세어울림한마당환불요청",
+                "requestBody": {
+                    "description": "환불요청",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimBoothRefundRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimBoothRefundRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EoullimBoothRefundRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothRefundResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothRefundResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothRefundResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/booth/{boothId}": {
+            "get": {
+                "tags": [
+                    "EoullinBooth"
+                ],
+                "summary": "한세어울림한마당부스정보조회",
+                "parameters": [
+                    {
+                        "name": "boothId",
+                        "in": "path",
+                        "description": "부스고유번호",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothInfoAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothInfoAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothInfoAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/eoullim/booth/{boothId}/detail": {
+            "get": {
+                "tags": [
+                    "EoullinBooth"
+                ],
+                "summary": "한세어울림한마당부스상세정보조회",
+                "parameters": [
+                    {
+                        "name": "boothId",
+                        "in": "path",
+                        "description": "부스고유번호",
+                        "required": true,
+                        "style": "simple",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothDetailResponseAPIResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothDetailResponseAPIResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EoullimBoothDetailResponseAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "EoullimBalanceAmountResponse": {
+                "type": "object",
+                "properties": {
+                    "balanceAmount": {
+                        "type": "integer",
+                        "description": "잔액",
+                        "format": "int64"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 사용자잔액조회응답"
+            },
+            "EoullimBalanceAmountResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimBalanceAmountResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimBoothDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "부스명",
+                        "nullable": true
+                    },
+                    "classification": {
+                        "type": "string",
+                        "description": "부스구분",
+                        "nullable": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "부스위치",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당부스상세정보"
+            },
+            "EoullimBoothDetailResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "부스명",
+                        "nullable": true
+                    },
+                    "classification": {
+                        "type": "string",
+                        "description": "부스구분",
+                        "nullable": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "부스위치",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당부스상세정보"
+            },
+            "EoullimBoothDetailResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimBoothDetailResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimBoothInfo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "부스명",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당부스정보"
+            },
+            "EoullimBoothInfoAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimBoothInfo"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimBoothPayment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "결제고유변호",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "description": "결제자고유번호",
+                        "format": "int64"
+                    },
+                    "boothId": {
+                        "type": "integer",
+                        "description": "결제대상",
+                        "format": "int64"
+                    },
+                    "paidAmount": {
+                        "type": "integer",
+                        "description": "결제금액",
+                        "format": "int64"
+                    },
+                    "refundedAmount": {
+                        "type": "integer",
+                        "description": "결제취소금액",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "paymentComment": {
+                        "type": "string",
+                        "description": "결제메시지",
+                        "nullable": true
+                    },
+                    "refundComment": {
+                        "type": "string",
+                        "description": "환불메시지",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "결제상태",
+                        "nullable": true
+                    },
+                    "paidTime": {
+                        "type": "string",
+                        "description": "결제시간",
+                        "format": "date-time"
+                    },
+                    "refundedTime": {
+                        "type": "string",
+                        "description": "결제취소시간",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "userName": {
+                        "type": "string",
+                        "description": "사용자이름",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 결제내역"
+            },
+            "EoullimBoothPaymentDetailResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "페이지",
+                        "format": "int32"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "페이지당 항목수",
+                        "format": "int32"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "전체 항목수",
+                        "format": "int32"
+                    },
+                    "totalPage": {
+                        "type": "integer",
+                        "description": "전체 페이지수",
+                        "format": "int32",
+                        "readOnly": true
+                    },
+                    "boothInfo": {
+                        "$ref": "#/components/schemas/EoullimBoothDetail"
+                    },
+                    "balanceAmount": {
+                        "type": "integer",
+                        "description": "잔액",
+                        "format": "int64"
+                    },
+                    "payments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EoullimBoothPayment"
+                        },
+                        "description": "결제내역",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 부스결제내역"
+            },
+            "EoullimBoothPaymentDetailResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimBoothPaymentDetailResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimBoothRefundRequest": {
+                "required": [
+                    "paymentId"
+                ],
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "결제고유번호",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "maxLength": 24,
+                        "type": "string",
+                        "description": "환불메시지",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당환불요청"
+            },
+            "EoullimBoothRefundResponse": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "integer",
+                        "description": "결제고유번호",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "description": "사용자고유번호",
+                        "format": "int64"
+                    },
+                    "boothId": {
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "paidAmount": {
+                        "type": "integer",
+                        "description": "결제금액",
+                        "format": "int64"
+                    },
+                    "refundedAmount": {
+                        "type": "integer",
+                        "description": "환불금액",
+                        "format": "int64"
+                    },
+                    "balanceAmount": {
+                        "type": "integer",
+                        "description": "결제후부스잔액",
+                        "format": "int64"
+                    },
+                    "transaction": {
+                        "$ref": "#/components/schemas/EoullimTransactionInfo"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 부스환불내역"
+            },
+            "EoullimBoothRefundResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimBoothRefundResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimExchangeTransferRequest": {
+                "required": [
+                    "amount",
+                    "userId"
+                ],
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "사용자고유번호",
+                        "format": "int64"
+                    },
+                    "amount": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "충전금액",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "maxLength": 24,
+                        "type": "string",
+                        "description": "충전메시지",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당환전충전요청"
+            },
+            "EoullimExchangeTransferResponse": {
+                "type": "object",
+                "properties": {
+                    "totalExchangeAmount": {
+                        "type": "integer",
+                        "description": "시스템 총 환전 금액",
+                        "format": "int64"
+                    },
+                    "transaction": {
+                        "$ref": "#/components/schemas/EoullimTransactionDetail"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 환전충전 트랜잭션정보"
+            },
+            "EoullimExchangeTransferResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimExchangeTransferResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimPaymentRequest": {
+                "required": [
+                    "amount",
+                    "boothId"
+                ],
+                "type": "object",
+                "properties": {
+                    "boothId": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "amount": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "결제금액",
+                        "format": "int64"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당결제요청"
+            },
+            "EoullimPaymentResponse": {
+                "type": "object",
+                "properties": {
+                    "paymentId": {
+                        "type": "integer",
+                        "description": "결제고유번호",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "description": "사용자고유번호",
+                        "format": "int64"
+                    },
+                    "boothId": {
+                        "type": "integer",
+                        "description": "부스고유번호",
+                        "format": "int64"
+                    },
+                    "balanceAmount": {
+                        "type": "integer",
+                        "description": "결제후잔액",
+                        "format": "int64"
+                    },
+                    "transaction": {
+                        "$ref": "#/components/schemas/EoullimTransactionInfo"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 트랜잭션정보"
+            },
+            "EoullimPaymentResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimPaymentResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            },
+            "EoullimTransactionDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "트랜잭션고유번호",
+                        "format": "int64"
+                    },
+                    "senderId": {
+                        "type": "integer",
+                        "description": "송금자고유번호, 환전소의 경우 NULL로 설정",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "receiverId": {
+                        "type": "integer",
+                        "description": "수신자고유번호",
+                        "format": "int64"
+                    },
+                    "transferAmount": {
+                        "type": "integer",
+                        "description": "이체금액",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "송금메시지",
+                        "nullable": true
+                    },
+                    "time": {
+                        "type": "string",
+                        "description": "트랜잭션시간",
+                        "format": "date-time"
+                    },
+                    "senderAmount": {
+                        "type": "integer",
+                        "description": "송금자잔액",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "receiverAmount": {
+                        "type": "integer",
+                        "description": "수신자잔액",
+                        "format": "int64"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 트랜잭션전체정보"
+            },
+            "EoullimTransactionInfo": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "트랜잭션고유번호",
+                        "format": "int64"
+                    },
+                    "senderId": {
+                        "type": "integer",
+                        "description": "송금자고유번호, 환전소의 경우 NULL로 설정",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "receiverId": {
+                        "type": "integer",
+                        "description": "수신자고유번호",
+                        "format": "int64"
+                    },
+                    "transferAmount": {
+                        "type": "integer",
+                        "description": "이체금액",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "송금메시지",
+                        "nullable": true
+                    },
+                    "time": {
+                        "type": "string",
+                        "description": "트랜잭션시간",
+                        "format": "date-time"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 트랜잭션정보"
+            },
+            "EoullimUserPayment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "결제고유변호",
+                        "format": "int64"
+                    },
+                    "userId": {
+                        "type": "integer",
+                        "description": "결제자고유번호",
+                        "format": "int64"
+                    },
+                    "boothId": {
+                        "type": "integer",
+                        "description": "결제대상",
+                        "format": "int64"
+                    },
+                    "paidAmount": {
+                        "type": "integer",
+                        "description": "결제금액",
+                        "format": "int64"
+                    },
+                    "refundedAmount": {
+                        "type": "integer",
+                        "description": "결제취소금액",
+                        "format": "int64",
+                        "nullable": true
+                    },
+                    "paymentComment": {
+                        "type": "string",
+                        "description": "결제메시지",
+                        "nullable": true
+                    },
+                    "refundComment": {
+                        "type": "string",
+                        "description": "환불메시지",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "결제상태",
+                        "nullable": true
+                    },
+                    "paidTime": {
+                        "type": "string",
+                        "description": "결제시간",
+                        "format": "date-time"
+                    },
+                    "refundedTime": {
+                        "type": "string",
+                        "description": "결제취소시간",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "boothName": {
+                        "type": "string",
+                        "description": "부스이름",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 결제내역"
+            },
+            "EoullimUserPaymentDetailResponse": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "페이지",
+                        "format": "int32"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "페이지당 항목수",
+                        "format": "int32"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "전체 항목수",
+                        "format": "int32"
+                    },
+                    "totalPage": {
+                        "type": "integer",
+                        "description": "전체 페이지수",
+                        "format": "int32",
+                        "readOnly": true
+                    },
+                    "balanceAmount": {
+                        "type": "integer",
+                        "description": "잔액",
+                        "format": "int64"
+                    },
+                    "payments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EoullimUserPayment"
+                        },
+                        "description": "결제내역",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false,
+                "description": "한세어울림한마당 사용자결제내역"
+            },
+            "EoullimUserPaymentDetailResponseAPIResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "응답코드",
+                        "nullable": true
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/EoullimUserPaymentDetailResponse"
+                    }
+                },
+                "additionalProperties": false,
+                "description": "API응답"
+            }
+        }
+    }
+}

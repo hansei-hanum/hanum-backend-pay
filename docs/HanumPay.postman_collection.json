@@ -1,0 +1,787 @@
+{
+	"info": {
+		"_postman_id": "1e719e4c-cf15-4227-9e78-0bab821ab664",
+		"name": "HanumPay",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13699609",
+		"_collection_link": "https://hansei-hanum.postman.co/workspace/Team-Workspace~8a3f250c-e686-48bc-8422-88c87a982ba7/collection/13699609-1e719e4c-cf15-4227-9e78-0bab821ab664?action=share&source=collection_link&creator=13699609"
+	},
+	"item": [
+		{
+			"name": "결제",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"boothId\": 200000,\r\n  \"amount\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/balance/payment",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"balance",
+						"payment"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "결제",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"boothId\": 200000,\r\n  \"amount\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/eoullim/balance/payment",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"eoullim",
+								"balance",
+								"payment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:36:22 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"paymentId\": 3601,\n        \"userId\": 3,\n        \"boothId\": 200000,\n        \"balanceAmount\": 200,\n        \"transaction\": {\n            \"id\": 6129,\n            \"senderId\": 303610,\n            \"receiverId\": 300000,\n            \"transferAmount\": 100,\n            \"message\": null,\n            \"time\": \"2023-09-13T22:36:22\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "환불",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_BOOTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paymentId\": 3602,\r\n    \"message\": \"응 장사 안해~\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5213/eoullim/booth/payment/refund",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5213",
+					"path": [
+						"eoullim",
+						"booth",
+						"payment",
+						"refund"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "환불",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"paymentId\": 2565,\r\n    \"message\": \"응 장사 안해~\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5213/booth/payment/refund",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5213",
+							"path": [
+								"booth",
+								"payment",
+								"refund"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:36:40 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"paymentId\": 2565,\n        \"userId\": 100078,\n        \"boothId\": 200002,\n        \"paidAmount\": 1000,\n        \"refundedAmount\": 1000,\n        \"balanceAmount\": 88000,\n        \"transaction\": {\n            \"id\": 6130,\n            \"senderId\": 325,\n            \"receiverId\": 300002,\n            \"transferAmount\": 1000,\n            \"message\": \"응 장사 안해~\",\n            \"time\": \"2023-09-13T22:36:41\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "환전",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_MAN_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": 7,\r\n  \"amount\": 300,\r\n  \"message\": \"sans\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/exchange/transfer",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"exchange",
+						"transfer"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "환전",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 3,\r\n  \"amount\": 300,\r\n  \"message\": \"sans\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5213/eoullim/exchange/transfer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5213",
+							"path": [
+								"eoullim",
+								"exchange",
+								"transfer"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:36:12 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"totalExchangeAmount\": 10000300,\n        \"transaction\": {\n            \"senderAmount\": null,\n            \"receiverAmount\": 300,\n            \"id\": 6128,\n            \"senderId\": null,\n            \"receiverId\": 303610,\n            \"transferAmount\": 300,\n            \"message\": \"sans\",\n            \"time\": \"2023-09-13T22:36:13\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "부스정보",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/booth/200000",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"booth",
+						"200000"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "부스정보",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5213/booth/200000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5213",
+							"path": [
+								"booth",
+								"200000"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:30:20 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"id\": 200000,\n        \"name\": \"eLmGL\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "부스상세정보",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/booth/200000/detail",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"booth",
+						"200000",
+						"detail"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "부스상세정보",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/booth/200000/detail",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"booth",
+								"200000",
+								"detail"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:32:10 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"classification\": \"XLiAq\",\n        \"location\": \"LIriK\",\n        \"id\": 200000,\n        \"name\": \"eLmGL\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "부스결제내역",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/booth/payment/detail?page=1&limit=20",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"booth",
+						"payment",
+						"detail"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "부스결제내역",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/booth/payment/detail?page=1&limit=20",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"booth",
+								"payment",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:32:13 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"balanceAmount\": 100000,\n        \"payments\": [\n            {\n                \"userName\": \"ekmwl\",\n                \"id\": 2565,\n                \"userId\": 100078,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"PMXwx\",\n                \"id\": 2564,\n                \"userId\": 100087,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"PgaUg\",\n                \"id\": 2563,\n                \"userId\": 100081,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"yqtZd\",\n                \"id\": 2562,\n                \"userId\": 100092,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"lJDuA\",\n                \"id\": 2561,\n                \"userId\": 100085,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"vzHcE\",\n                \"id\": 2560,\n                \"userId\": 100097,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"apeMX\",\n                \"id\": 2559,\n                \"userId\": 100094,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"XOPFR\",\n                \"id\": 2558,\n                \"userId\": 100079,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"SuSIv\",\n                \"id\": 2557,\n                \"userId\": 100091,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"faRqd\",\n                \"id\": 2556,\n                \"userId\": 100088,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"LuQkJ\",\n                \"id\": 2555,\n                \"userId\": 100082,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"NsiVi\",\n                \"id\": 2554,\n                \"userId\": 100096,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"aYbfB\",\n                \"id\": 2553,\n                \"userId\": 100083,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"oAlGh\",\n                \"id\": 2552,\n                \"userId\": 100099,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"Rmllx\",\n                \"id\": 2551,\n                \"userId\": 100086,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"jiHyl\",\n                \"id\": 2550,\n                \"userId\": 100098,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"gEEjo\",\n                \"id\": 2549,\n                \"userId\": 100089,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"ltSXr\",\n                \"id\": 2548,\n                \"userId\": 100090,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"fnvtd\",\n                \"id\": 2547,\n                \"userId\": 100080,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"YKtkM\",\n                \"id\": 2546,\n                \"userId\": 100084,\n                \"boothId\": 200002,\n                \"paidAmount\": 1000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T18:14:59\",\n                \"refundedTime\": null\n            }\n        ],\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 200,\n        \"totalPage\": 10\n    }\n}"
+				},
+				{
+					"name": "부스결제내역 V2 deprecated",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/eoullim/booth/payment/detail?page=1&limit=20",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"eoullim",
+								"booth",
+								"payment",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 17 Sep 2023 09:39:27 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"balanceAmount\": 100000000119999,\n        \"payments\": [\n            {\n                \"userName\": \"누구세요\",\n                \"userRole\": null,\n                \"id\": 25,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:33:58\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 24,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:32:15\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 23,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 100000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:31:50\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 22,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:30:19\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"userRole\": null,\n                \"id\": 21,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:39:04\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"userRole\": null,\n                \"id\": 20,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:38:50\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"userRole\": null,\n                \"id\": 19,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:38:43\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"userRole\": null,\n                \"id\": 18,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:35:18\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 17,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-15T16:08:21\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 16,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:48:31\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 15,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:48:23\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 14,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:47:46\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 13,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:46:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 12,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:37:43\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 11,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:36:24\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 10,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:34:05\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 9,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:32:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 8,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:32:27\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 7,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:31:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"userRole\": {\n                    \"userId\": 7,\n                    \"type\": \"STUDENT\",\n                    \"department\": \"CLOUD_SECURITY\",\n                    \"grade\": 2,\n                    \"classroom\": 1,\n                    \"number\": 15\n                },\n                \"id\": 6,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:31:04\",\n                \"refundedTime\": null\n            }\n        ],\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 25,\n        \"totalPage\": 2\n    }\n}"
+				},
+				{
+					"name": "부스결제내역 V2",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/eoullim/booth/payment/detail?page=1&limit=20",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"eoullim",
+								"booth",
+								"payment",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 17 Sep 2023 10:04:50 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"boothInfo\": {\n            \"classification\": \"느그과 느그학년 느그반\",\n            \"location\": \"\",\n            \"id\": 1,\n            \"name\": \"느그부스\"\n        },\n        \"balanceAmount\": 100000000119999,\n        \"payments\": [\n            {\n                \"userName\": \"누구세요\",\n                \"id\": 25,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:33:58\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 24,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:32:15\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 23,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 100000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:31:50\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 22,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T20:30:19\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"id\": 21,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:39:04\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"id\": 20,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:38:50\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"id\": 19,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:38:43\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"누구세요\",\n                \"id\": 18,\n                \"userId\": 10,\n                \"boothId\": 1,\n                \"paidAmount\": 10000,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-16T19:35:18\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 17,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-15T16:08:21\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 16,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:48:31\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 15,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:48:23\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 14,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:47:46\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 13,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T23:46:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 12,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:37:43\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 11,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:36:24\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 10,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:34:05\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 9,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:32:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 8,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:32:27\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 7,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:31:54\",\n                \"refundedTime\": null\n            },\n            {\n                \"userName\": \"최근원\",\n                \"id\": 6,\n                \"userId\": 7,\n                \"boothId\": 1,\n                \"paidAmount\": 1,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-14T15:31:04\",\n                \"refundedTime\": null\n            }\n        ],\n        \"page\": 1,\n        \"limit\": 20,\n        \"total\": 25,\n        \"totalPage\": 2\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "사용자결제내역",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/balance/detail?page=1&limit=400",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"balance",
+						"detail"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "400"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "사용자결제내역",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/eoullim/balance/detail?page=1&limit=400",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"eoullim",
+								"balance",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "400"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 13:42:43 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"balanceAmount\": 200,\n        \"payments\": [\n            {\n                \"boothName\": \"eLmGL\",\n                \"id\": 3601,\n                \"userId\": 3,\n                \"boothId\": 200000,\n                \"paidAmount\": 100,\n                \"refundedAmount\": null,\n                \"paymentComment\": null,\n                \"refundComment\": null,\n                \"status\": \"paid\",\n                \"paidTime\": \"2023-09-13T22:36:22\",\n                \"refundedTime\": null\n            }\n        ],\n        \"page\": 1,\n        \"limit\": 400,\n        \"total\": 1,\n        \"totalPage\": 1\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "사용자잔고잔액",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{HANUM_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HANUM_DOMAIN}}/eoullim/balance/amount",
+					"host": [
+						"{{HANUM_DOMAIN}}"
+					],
+					"path": [
+						"eoullim",
+						"balance",
+						"amount"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "사용자잔고잔액",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{HANUM_DOMAIN}}/eoullim/balance/amount",
+							"host": [
+								"{{HANUM_DOMAIN}}"
+							],
+							"path": [
+								"eoullim",
+								"balance",
+								"amount"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 14:10:38 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"SUCCESS\",\n    \"data\": {\n        \"balanceAmount\": 200\n    }\n}"
+				}
+			]
+		}
+	]
+}
