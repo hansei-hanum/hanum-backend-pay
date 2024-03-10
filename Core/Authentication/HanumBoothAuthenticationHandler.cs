@@ -21,15 +21,13 @@ public class HanumBoothAuthenticationHandler(
     public const string SchemeName = "HanumBoothAuth";
     public const string CookieName = "EoullimBoothToken";
 
-    private readonly bool _bypassAuth = configuration.GetValue<bool>("BypassAuth");
+    private readonly bool _bypassAuth = configuration.GetValue<bool>("Hanum:BypassAuth");
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync() {
         var tokenString = Request.Headers.Authorization.ToString();
 
         if (string.IsNullOrEmpty(tokenString))
             tokenString = Request.Cookies[CookieName] ?? string.Empty;
-
-        Console.WriteLine("sdfghjkiuytf" + tokenString);
 
         var token = tokenString.Split(" ");
 

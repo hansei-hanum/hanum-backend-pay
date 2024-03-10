@@ -1,7 +1,9 @@
-using Hanum.Core.Authentication;
-using Hanum.Pay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using Hanum.Core.Authentication;
+using Hanum.Core.Models;
+using Hanum.Pay.Models.DTO.Responses;
 
 namespace Hanum.Pay.Controllers;
 
@@ -19,7 +21,7 @@ public partial class EoullinBoothController : ControllerBase {
         if (boothInfo is null) {
             logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
 
-            return APIResponse<EoullimBoothInfo>.FromError("BOOTH_NOT_FOUND");
+            return APIResponse<EoullimBoothInfo>.FromError(HanumStatusCode.BoothNotFound);
         }
 
         return APIResponse<EoullimBoothInfo>.FromData(
@@ -43,7 +45,7 @@ public partial class EoullinBoothController : ControllerBase {
         if (boothInfo is null) {
             logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
 
-            return APIResponse<EoullimBoothDetailResponse>.FromError("BOOTH_NOT_FOUND");
+            return APIResponse<EoullimBoothDetailResponse>.FromError(HanumStatusCode.BoothNotFound);
         }
 
         return APIResponse<EoullimBoothDetailResponse>.FromData(

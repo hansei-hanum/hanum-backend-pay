@@ -1,5 +1,5 @@
 using Hanum.Pay.Contexts;
-using Hanum.Pay.Models.Responses;
+using Hanum.Pay.Models.DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

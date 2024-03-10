@@ -1,8 +1,9 @@
+using Hanum.Core.Models;
 
 namespace Hanum.Pay.Models;
 
 public class StoredProcedureResult<TValue> {
-    static readonly Dictionary<string, string> ErrorMessages = new() {
+    private static readonly Dictionary<string, string> ErrorMessages = new() {
         {"USER_NOT_FOUND", "해당 사용자가 존재하지 않습니다."},
         {"NOT_A_PERSONAL_BALANCE", "해당 잔고는 개인잔고가 아닙니다."},
         {"BOOTH_BALANCE_NOT_FOUND", "해당 부스 잔고가 존재하지 않습니다."},
@@ -19,10 +20,29 @@ public class StoredProcedureResult<TValue> {
         {"RECEIVER_BALANCE_NOT_UPDATED", "수신자 금액을 업데이트하지 못했습니다."},
     };
 
+    private static readonly Dictionary<string, HanumStatusCode> ErrorCodes = new() {
+        {"USER_NOT_FOUND", HanumStatusCode.UserNotFound},
+        {"NOT_A_PERSONAL_BALANCE", HanumStatusCode.NotAPersonalBalance},
+        {"BOOTH_BALANCE_NOT_FOUND", HanumStatusCode.BoothBalanceNotFound},
+        {"NOT_A_BOOTH_OPERATIONAL_BALANCE", HanumStatusCode.NotABoothOperationalBalance},
+        {"PAYMENT_RECORD_NOT_FOUND", HanumStatusCode.PaymentRecordNotFound},
+        {"PAYMENT_ALREADY_CANCELLED", HanumStatusCode.PaymentAlreadyCancelled},
+        {"PAYMENT_CANCELLATION_STATUS_NOT_UPDATED", HanumStatusCode.PaymentCancellationStatusNotUpdated},
+        {"SENDER_ID_EQUALS_RECEIVER_ID", HanumStatusCode.SenderIdEqualsReceiverId},
+        {"INVALID_TRANSFER_AMOUNT", HanumStatusCode.InvalidTransferAmount},
+        {"INVALID_SENDER_ID", HanumStatusCode.InvalidSenderId},
+        {"INSUFFICIENT_SENDER_BALANCE", HanumStatusCode.InsufficientSenderBalance},
+        {"INVALID_RECEIVER_ID", HanumStatusCode.InvalidReceiverId},
+        {"SENDER_BALANCE_NOT_UPDATED", HanumStatusCode.SenderBalanceNotUpdated},
+        {"RECEIVER_BALANCE_NOT_UPDATED", HanumStatusCode.ReceiverBalanceNotUpdated},
+    };
+
     private TValue? _data;
 
     public bool Success { get; set; } = true;
     public string? ErrorCode { get; set; } = null;
+    public HanumStatusCode StatusCode => ErrorCode != null ? ErrorCodes.GetValueOrDefault(ErrorCode, HanumStatusCode.Error) : HanumStatusCode.Success;
+
     public TValue Data {
         get => Success ? _data! : throw new InvalidOperationException("Data is not available when Success is false");
         set => _data = value;

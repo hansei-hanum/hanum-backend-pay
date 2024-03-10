@@ -1,5 +1,5 @@
 
-namespace Hanum.Pay.Models.Responses;
+namespace Hanum.Pay.Models.DTO.Responses;
 
 /// <summary>
 /// 한세어울림한마당 트랜잭션정보

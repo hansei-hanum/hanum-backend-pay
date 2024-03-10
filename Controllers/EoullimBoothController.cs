@@ -1,11 +1,14 @@
 using System.Security.Claims;
-using Hanum.Pay.Contexts;
-using Hanum.Pay.Core.Authentication;
-using Hanum.Pay.Models.Requests;
-using Hanum.Pay.Models.Responses;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+using Hanum.Core.Models;
+using Hanum.Pay.Contexts;
+using Hanum.Pay.Core.Authentication;
+using Hanum.Pay.Models.DTO.Requests;
+using Hanum.Pay.Models.DTO.Responses;
 
 namespace Hanum.Pay.Controllers;
 
@@ -105,7 +108,7 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
         ).FirstOrDefaultAsync();
 
         if (paymentInfo == null)
-            return APIResponse<EoullimBoothRefundResponse>.FromError("PAYMENT_NOT_FOUND");
+            return APIResponse<EoullimBoothRefundResponse>.FromError(HanumStatusCode.PaymentNotFound);
 
         var refundResult = await context.EoullimPaymentCancel(
             paymentId: refundRequest.PaymentId,
@@ -116,7 +119,7 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
             logger.LogWarning("환불실패: {ErrorMessage} [결제: {PaymentId}, 부스: {BoothId}, 사용자: {UserId}, 금액: {Amount}]",
                 refundResult.ErrorMessage ?? "Unknown", refundRequest.PaymentId, boothId, paymentInfo.UserId, paymentInfo.PaidAmount);
 
-            return APIResponse<EoullimBoothRefundResponse>.FromError(refundResult.ErrorCode ?? "UNKNOWN_ERROR");
+            return APIResponse<EoullimBoothRefundResponse>.FromError(refundResult.StatusCode);
         }
 
         var transaction = refundResult.Data.Transaction;

@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using Hanum.Core.Authentication;
 using Hanum.Pay.Contexts;
-using Hanum.Pay.Models.Requests;
-using Hanum.Pay.Models.Responses;
+using Hanum.Pay.Models.DTO.Requests;
+using Hanum.Pay.Models.DTO.Responses;
+using Hanum.Core.Models;
 
 namespace Hanum.Pay.Controllers;
 
@@ -37,7 +38,7 @@ public class EoullimExchangeController(
         if (!_allowedUsers.Contains(userId)) {
             logger.LogWarning("허용되지 않은 사용자가 환전을 시도했습니다. [{UserId}]", userId);
             Response.StatusCode = 403;
-            return APIResponse<EoullimExchangeTransferResponse>.FromError("NOT_ALLOWED");
+            return APIResponse<EoullimExchangeTransferResponse>.FromError(HanumStatusCode.NotAllowed);
         }
 
         var exchangeResult = await context.EoullimPersonalBalanceCharge(
@@ -50,7 +51,7 @@ public class EoullimExchangeController(
             logger.LogWarning("충전실패: {ErrorMessage} [사용자: {UserId}, 충전금액: {Amount}]",
                 exchangeResult.ErrorMessage ?? "Unknown", transferRequest.UserId, transferRequest.Amount);
 
-            return APIResponse<EoullimExchangeTransferResponse>.FromError(exchangeResult.ErrorCode ?? "UNKNOWN_ERROR");
+            return APIResponse<EoullimExchangeTransferResponse>.FromError(exchangeResult.StatusCode);
         }
 
         var transaction = exchangeResult.Data.Transaction;

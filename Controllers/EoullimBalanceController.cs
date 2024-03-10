@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 using Hanum.Core.Authentication;
 using Hanum.Pay.Contexts;
-using Hanum.Pay.Models.Requests;
-using Hanum.Pay.Models.Responses;
+using Hanum.Pay.Models.DTO.Requests;
+using Hanum.Pay.Models.DTO.Responses;
 
 namespace Hanum.Pay.Controllers;
 
@@ -103,7 +103,7 @@ public class EoullimPaymentController(ILogger<EoullimPaymentController> logger, 
 
             Response.StatusCode = 400;
 
-            return APIResponse<EoullimPaymentResponse>.FromError(paymentResult.ErrorCode ?? "UNKNOWN_ERROR");
+            return APIResponse<EoullimPaymentResponse>.FromError(paymentResult.StatusCode);
         }
 
         var transaction = paymentResult.Data.Transaction;

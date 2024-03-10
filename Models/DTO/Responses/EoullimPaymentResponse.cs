@@ -1,9 +1,10 @@
-namespace Hanum.Pay.Models.Responses;
+
+namespace Hanum.Pay.Models.DTO.Responses;
 
 /// <summary>
-/// 한세어울림한마당 부스환불내역
+/// 한세어울림한마당 트랜잭션정보
 /// </summary>
-public class EoullimBoothRefundResponse {
+public class EoullimPaymentResponse {
     /// <summary>
     /// 결제고유번호
     /// </summary>
@@ -17,19 +18,11 @@ public class EoullimBoothRefundResponse {
     /// </summary>
     public ulong BoothId { get; set; }
     /// <summary>
-    /// 결제금액
-    /// </summary>
-    public ulong PaidAmount { get; set; }
-    /// <summary>
-    /// 환불금액
-    /// </summary>
-    public ulong RefundedAmount { get; set; }
-    /// <summary>
-    /// 결제후부스잔액
+    /// 결제후잔액
     /// </summary>
     public ulong BalanceAmount { get; set; }
     /// <summary>
     /// 트랜잭션정보
     /// </summary>
-    public required EoullimTransactionInfo Transaction { get; set; }
+    public EoullimTransactionInfo? Transaction { get; set; }
 }
