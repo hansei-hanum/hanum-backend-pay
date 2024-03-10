@@ -1,6 +1,6 @@
 <ul>
     @{
-        int maxValue = Items.Max(x => x.Value);
+        int maxValue = Items.Any() ? Items.Max(x => x.Value) : 0;
     }
     @foreach (var item in Items)
     {
@@ -22,8 +22,7 @@
 </ul>
 
 @code {
-    public class Item
-    {
+    public class Item {
         public required int Value { get; set; }
         public required string Label { get; set; }
         public bool IsPrimary { get; set; } = false;

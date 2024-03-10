@@ -15,7 +15,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for procedure hanum.EoullimPersonalBalanceCharge
-DELIMITER //
 CREATE PROCEDURE `EoullimPersonalBalanceCharge`(
 	IN `userId` BIGINT UNSIGNED,
 	IN `transferAmount` BIGINT UNSIGNED,
@@ -47,8 +46,7 @@ BEGIN
 	 
 	 -- 환전 총액 조회
 	 SELECT SUM(amount) INTO totalExchangeAmount FROM `EoullimTransactions` WHERE senderId IS NULL;
-END//
-DELIMITER ;
+END;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

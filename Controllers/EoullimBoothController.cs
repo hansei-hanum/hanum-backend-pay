@@ -1,31 +1,25 @@
 using System.Security.Claims;
-using HanumPay.Contexts;
-using HanumPay.Core.Authentication;
-using HanumPay.Models.Requests;
-using HanumPay.Models.Responses;
+using Hanum.Pay.Contexts;
+using Hanum.Pay.Core.Authentication;
+using Hanum.Pay.Models.Requests;
+using Hanum.Pay.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HanumPay.Controllers;
+namespace Hanum.Pay.Controllers;
 
 /// <summary>
 /// 한세어울림한마당 부스
 /// </summary>
-[Authorize(AuthenticationSchemes = HanumBoothAuthenticationHandler.SchemeName)]
+/// <remarks>
+/// 한세어울림한마당 부스 생성자
+/// </remarks>
 [ApiController]
 [Route("eoullim/booth")]
-public partial class EoullinBoothController : ControllerBase {
-    private readonly ILogger<EoullinBoothController> _logger;
-    private readonly HanumContext _context;
-
-    /// <summary>
-    /// 한세어울림한마당 부스 생성자
-    /// </summary>
-    public EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) {
-        _logger = logger;
-        _context = context;
-    }
+public partial class EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) : ControllerBase {
+    private readonly ILogger<EoullinBoothController> _logger = logger;
+    private readonly HanumContext _context = context;
 
     /// <summary>
     /// 한세어울림한마당부스잔고조회
@@ -34,6 +28,7 @@ public partial class EoullinBoothController : ControllerBase {
     /// <param name="limit">페이지당 항목수</param>
     /// <returns></returns>
     [HttpGet("payment/detail")]
+    [Authorize(AuthenticationSchemes = HanumBoothAuthenticationHandler.SchemeName)]
     public async Task<APIResponse<EoullimBoothPaymentDetailResponse>> GetPaymentDetail(
         [FromQuery] int page = 1,
         [FromQuery] int limit = 20
@@ -99,6 +94,7 @@ public partial class EoullinBoothController : ControllerBase {
     /// <param name="refundRequest">환불요청</param>
     /// <returns>환불응답</returns>
     [HttpPost("payment/refund")]
+    [Authorize(AuthenticationSchemes = HanumBoothAuthenticationHandler.SchemeName)]
     public async Task<APIResponse<EoullimBoothRefundResponse>> PostRefundHistory(
         [FromBody] EoullimBoothRefundRequest refundRequest) {
         var boothId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);

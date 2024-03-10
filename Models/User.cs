@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HanumPay.Models;
+namespace Hanum.Pay.Models;
 
-public partial class User
-{
+public partial class User {
     public ulong Id { get; set; }
 
     public string Phone { get; set; } = null!;

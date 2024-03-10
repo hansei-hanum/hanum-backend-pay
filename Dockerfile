@@ -1,20 +1,20 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 # EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["HanumPay.csproj", "."]
-RUN dotnet restore "./HanumPay.csproj"
+COPY ["Hanum.Pay.csproj", "."]
+RUN dotnet restore "./Hanum.Pay.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "HanumPay.csproj" -c Release -o /app/build
+RUN dotnet build "Hanum.Pay.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "HanumPay.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Hanum.Pay.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "HanumPay.dll"]
+ENTRYPOINT ["dotnet", "Pay.dll"]

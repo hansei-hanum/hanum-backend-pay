@@ -1,4 +1,4 @@
-namespace HanumPay.Models.Results;
+namespace Hanum.Pay.Models;
 
 /// <summary>
 /// 한세어울림한마당 환전충전 결과

@@ -1,10 +1,10 @@
 using System.Data;
 using System.Data.Common;
-using HanumPay.Models.Results;
+using Hanum.Pay.Models;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 
-namespace HanumPay.Contexts;
+namespace Hanum.Pay.Contexts;
 
 static class HanumEoullimContextExtension {
     static IEnumerable<MySqlParameter> AddOutputParameters(

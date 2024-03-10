@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HanumPay.Models;
+namespace Hanum.Pay.Models;
 
 /// <summary>
 /// 한세어울림한마당 결제내역
 /// </summary>
-public partial class EoullimPayment
-{
+public partial class EoullimPayment {
     /// <summary>
     /// 결제고유변호
     /// </summary>

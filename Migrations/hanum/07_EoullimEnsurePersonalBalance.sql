@@ -15,7 +15,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for function hanum.EoullimEnsurePersonalBalance
-DELIMITER //
 CREATE FUNCTION `EoullimEnsurePersonalBalance`(`personalUserId` BIGINT UNSIGNED,
 	`message` VARCHAR(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) RETURNS bigint(20) unsigned
@@ -50,8 +49,7 @@ BEGIN
     
     -- 고유번호 반환
     RETURN balanceId;
-END//
-DELIMITER ;
+END;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

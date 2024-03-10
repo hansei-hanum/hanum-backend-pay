@@ -15,7 +15,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for procedure hanum.EoullimPaymentCancel
-DELIMITER //
 CREATE PROCEDURE `EoullimPaymentCancel`(
 	IN `paymentId` BIGINT UNSIGNED,
 	IN `message` VARCHAR(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -90,8 +89,7 @@ BEGIN
     
     -- 트랜잭션 커밋
     COMMIT;
-END//
-DELIMITER ;
+END;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

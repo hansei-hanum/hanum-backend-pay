@@ -1,19 +1,11 @@
-using HanumPay.Contexts;
-using HanumPay.Models.Responses;
+using Hanum.Pay.Contexts;
+using Hanum.Pay.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HanumPay.Services;
+namespace Hanum.Pay.Services;
 
-public class EoullimBoothService : ControllerBase {
-    readonly ILogger<EoullimBoothService> _logger;
-    readonly IDbContextFactory<HanumContext> _factory;
-
-    public EoullimBoothService(ILogger<EoullimBoothService> logger, IDbContextFactory<HanumContext> factory) {
-        _logger = logger;
-        _factory = factory;
-    }
-
+public class EoullimBoothService(IDbContextFactory<HanumContext> factory) : ControllerBase {
     /// <summary>
     /// 부스잔액순위조회
     /// </summary>
@@ -22,7 +14,7 @@ public class EoullimBoothService : ControllerBase {
     /// <param name="descending">정렬방식</param>
     /// <returns>조회결과</returns>
     public async Task<EoullimBoothRankResponse> GetBoothRankingAsync(int page = 1, int limit = 10, bool descending = true) {
-        using var context = _factory.CreateDbContext();
+        using var context = factory.CreateDbContext();
         return new EoullimBoothRankResponse {
             Ranks = (await context.EoullimBooths
                     .Where(booth => booth.EoullimBalance != null)

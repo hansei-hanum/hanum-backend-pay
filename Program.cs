@@ -1,26 +1,23 @@
-using System.Reflection;
-using Auth;
-using HanumPay.Contexts;
-using HanumPay.Core.Authentication;
-using HanumPay.Core.Middleware;
-using HanumPay.Services;
-using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Console;
+
+using Hanum.Core.Helpers;
+using Hanum.Core.Protos;
+using Hanum.Pay.Contexts;
+using Hanum.Pay.Services;
+using Hanum.Core.Authentication;
+using Hanum.Core.Middleware;
+using Hanum.Pay.Core.Authentication;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+var services = builder.Services;
 
 builder.WebHost.UseStaticWebAssets();
 
-builder.Services.AddLogging(logging =>
-    logging.AddSimpleConsole(options => {
-        options.SingleLine = true;
-        options.TimestampFormat = "HH:mm:ss ";
-        options.ColorBehavior = LoggerColorBehavior.Enabled;
-    })
-);
-
-builder.Services.AddCors(options => {
+services.AddHanumLogging();
+services.AddCors(options => {
     options.AddPolicy(
         name: "AllowAll",
         policyBuilder => {
@@ -32,60 +29,57 @@ builder.Services.AddCors(options => {
     options.AddPolicy(
         name: "AllowCors",
         policyBuilder => {
-            policyBuilder.WithOrigins(builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>()!)
+            policyBuilder.WithOrigins(configuration.GetSection("AllowedCorsOrigins").Get<string[]>()!)
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         }
     );
 });
 
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+services.AddRazorPages();
+services.AddServerSideBlazor();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.IncludeXmlComments(Path.Combine(
-        AppContext.BaseDirectory,
-        $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"
-    ));
-});
+services.AddControllers();
+services.AddHanumSwaggerGen();
 
 // DB Context
-var databaseConfig = builder.Configuration.GetSection("Database");
-var connectionString = builder.Configuration.GetConnectionString("Database.SQL");
-var dbOptionsBuilder = (DbContextOptionsBuilder options) => {
-    options.UseMySql(
-        connectionString,
-        ServerVersion.AutoDetect(connectionString),
-        options => options.EnableRetryOnFailure(
-            maxRetryCount: databaseConfig.GetValue<int>("MaxRetryCount"),
-            maxRetryDelay: TimeSpan.FromSeconds(databaseConfig.GetValue<int>("MaxRetryDelay")),
-            errorNumbersToAdd: null
-        )
-    );
-};
+services.AddHanumDbContexts<HanumContext>(
+    configuration.GetConnectionString("Database.SQL"),
+    configuration.GetSection("Database"));
 
-builder.Services.AddDbContextPool<HanumContext>(dbOptionsBuilder, databaseConfig.GetValue<int>("MaxPoolSize"));
-builder.Services.AddDbContextFactory<HanumContext>(dbOptionsBuilder);
 // Redis Cache
-builder.Services.AddStackExchangeRedisCache(options => {
-    options.Configuration = builder.Configuration.GetConnectionString("Cache.Redis");
+services.AddStackExchangeRedisCache(options => {
+    options.Configuration = configuration.GetConnectionString("Cache.Redis");
 });
 
 // gRPC Client
-builder.Services.AddGrpcClient<AuthService.AuthServiceClient>(options => {
-    options.Address = new(builder.Configuration.GetConnectionString("AuthService.gRPC")!);
-});
+services.AddHanumAuthGrpcClient(
+    configuration.GetConnectionString("AuthService.gRPC")!);
 
 // Authentication Handler
-builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, HanumAuthenticationHandler>(HanumAuthenticationHandler.SchemeName, null)
+services.AddAuthentication()
+    .AddHanumCommonAuthScheme()
     .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>(HanumBoothAuthenticationHandler.SchemeName, null);
 
-builder.Services.AddTransient<EoullimBoothService>();
+// Services
+services.AddSingleton<EoullimBoothService>();
 
 var app = builder.Build();
+
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope()) {
+    var context = serviceScope.ServiceProvider.GetRequiredService<HanumContext>();
+
+    foreach (var sqls in Directory.GetFiles("Migrations/hanum", "*.sql").OrderBy(x => x)) {
+        var sql = File.ReadAllText(sqls);
+
+        try {
+            context.Database.ExecuteSqlRaw(sql);
+        } catch {
+            if (sqls.Contains('!'))
+                throw;
+        }
+    }
+}
 
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
@@ -98,15 +92,19 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseMiddleware<RequestLoggingMiddleware>();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.MapBlazorHub();
+
 app.MapFallbackToPage("/_Host");
 
 

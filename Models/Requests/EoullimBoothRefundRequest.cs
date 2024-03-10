@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace HanumPay.Models.Requests;
+namespace Hanum.Pay.Models.Requests;
 
 /// <summary>
 /// 한세어울림한마당환불요청

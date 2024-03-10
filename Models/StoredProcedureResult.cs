@@ -1,5 +1,5 @@
 
-namespace HanumPay.Models.Results;
+namespace Hanum.Pay.Models;
 
 public class StoredProcedureResult<TValue> {
     static readonly Dictionary<string, string> ErrorMessages = new() {

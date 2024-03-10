@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HanumPay.Models;
+namespace Hanum.Pay.Models;
 
 /// <summary>
 /// 한세어울림한마당 잔고
 /// </summary>
-public partial class EoullimBalance
-{
+public partial class EoullimBalance {
     /// <summary>
     /// 잔고 고유 ID
     /// </summary>

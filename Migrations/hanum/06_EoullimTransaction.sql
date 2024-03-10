@@ -15,7 +15,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for procedure hanum.EoullimTransaction
-DELIMITER //
 CREATE PROCEDURE `EoullimTransaction`(
 	IN `senderId` BIGINT UNSIGNED,
 	IN `receiverId` BIGINT UNSIGNED,
@@ -107,8 +106,7 @@ BEGIN
 	 
     -- 트랜잭션 커밋
     COMMIT;
-END//
-DELIMITER ;
+END;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

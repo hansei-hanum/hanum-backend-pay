@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HanumPay.Models;
+namespace Hanum.Pay.Models;
 
-public partial class VerificationKey
-{
+public partial class VerificationKey {
     public string Key { get; set; } = null!;
 
     public ulong? UserId { get; set; }

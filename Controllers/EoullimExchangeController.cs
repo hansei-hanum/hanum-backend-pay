@@ -1,19 +1,20 @@
 using System.Security.Claims;
-using HanumPay.Contexts;
-using HanumPay.Core.Authentication;
-using HanumPay.Models.Requests;
-using HanumPay.Models.Responses;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
-namespace HanumPay.Controllers;
+using Hanum.Core.Authentication;
+using Hanum.Pay.Contexts;
+using Hanum.Pay.Models.Requests;
+using Hanum.Pay.Models.Responses;
+
+namespace Hanum.Pay.Controllers;
 
 /// <summary>
 /// 한세어울림한마당환전소
 /// </summary>
-[Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
 [ApiController]
 [Route("eoullim/exchange")]
+[HanumCommomAuthorize]
 public class EoullimExchangeController : ControllerBase {
     readonly ILogger<EoullimExchangeController> _logger;
     readonly HanumContext _context;
