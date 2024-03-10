@@ -43,6 +43,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Hanum.Core\Core.csproj" />
+    <ProjectReference Include="..\Hanum.Core\Hanum.Core.csproj" />
   </ItemGroup>
 </Project>
