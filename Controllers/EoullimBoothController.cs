@@ -18,9 +18,6 @@ namespace Hanum.Pay.Controllers;
 [ApiController]
 [Route("eoullim/booth")]
 public partial class EoullinBoothController(ILogger<EoullinBoothController> logger, HanumContext context) : ControllerBase {
-    private readonly ILogger<EoullinBoothController> _logger = logger;
-    private readonly HanumContext _context = context;
-
     /// <summary>
     /// 한세어울림한마당부스잔고조회
     /// </summary>
@@ -38,9 +35,9 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
         return APIResponse<EoullimBoothPaymentDetailResponse>.FromData(new() {
             Page = page,
             Limit = limit,
-            Total = await _context.EoullimPayments.CountAsync(p => p.BoothId == boothId),
+            Total = await context.EoullimPayments.CountAsync(p => p.BoothId == boothId),
             BoothInfo = await (
-                    from b in _context.EoullimBooths
+                    from b in context.EoullimBooths
                     where b.Id == boothId
                     select new EoullimBoothDetail {
                         Id = b.Id,
@@ -50,12 +47,12 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
                     }
                 ).FirstAsync(),
             BalanceAmount = await (
-                    from b in _context.EoullimBalances
+                    from b in context.EoullimBalances
                     where b.BoothId == boothId
                     select b.Amount
                 ).FirstOrDefaultAsync(),
             Payments = await (
-                    from p in _context.EoullimPayments
+                    from p in context.EoullimPayments
                     where p.BoothId == boothId
                     orderby p.Id descending
                     select new EoullimBoothPayment {
@@ -99,7 +96,7 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
         [FromBody] EoullimBoothRefundRequest refundRequest) {
         var boothId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var paymentInfo = await (
-            from p in _context.EoullimPayments
+            from p in context.EoullimPayments
             where p.Id == refundRequest.PaymentId && p.BoothId == boothId
             select new {
                 p.UserId,
@@ -110,13 +107,13 @@ public partial class EoullinBoothController(ILogger<EoullinBoothController> logg
         if (paymentInfo == null)
             return APIResponse<EoullimBoothRefundResponse>.FromError("PAYMENT_NOT_FOUND");
 
-        var refundResult = await _context.EoullimPaymentCancel(
+        var refundResult = await context.EoullimPaymentCancel(
             paymentId: refundRequest.PaymentId,
             message: refundRequest.Message
         );
 
         if (!refundResult.Success) {
-            _logger.LogWarning("환불실패: {ErrorMessage} [결제: {PaymentId}, 부스: {BoothId}, 사용자: {UserId}, 금액: {Amount}]",
+            logger.LogWarning("환불실패: {ErrorMessage} [결제: {PaymentId}, 부스: {BoothId}, 사용자: {UserId}, 금액: {Amount}]",
                 refundResult.ErrorMessage ?? "Unknown", refundRequest.PaymentId, boothId, paymentInfo.UserId, paymentInfo.PaidAmount);
 
             return APIResponse<EoullimBoothRefundResponse>.FromError(refundResult.ErrorCode ?? "UNKNOWN_ERROR");

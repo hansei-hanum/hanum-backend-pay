@@ -14,10 +14,10 @@ public partial class EoullinBoothController : ControllerBase {
     [HttpGet("{boothId}")]
     [HanumCommomAuthorize]
     public async Task<APIResponse<EoullimBoothInfo>> GetBoothInfo([FromRoute] ulong boothId) {
-        var boothInfo = await _context.EoullimBooths.FindAsync(boothId);
+        var boothInfo = await context.EoullimBooths.FindAsync(boothId);
 
         if (boothInfo is null) {
-            _logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
+            logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
 
             return APIResponse<EoullimBoothInfo>.FromError("BOOTH_NOT_FOUND");
         }
@@ -38,10 +38,10 @@ public partial class EoullinBoothController : ControllerBase {
     [HttpGet("{boothId}/detail")]
     [Authorize(AuthenticationSchemes = HanumAuthenticationHandler.SchemeName)]
     public async Task<APIResponse<EoullimBoothDetailResponse>> GetBoothDetail([FromRoute] ulong boothId) {
-        var boothInfo = await _context.EoullimBooths.FindAsync(boothId);
+        var boothInfo = await context.EoullimBooths.FindAsync(boothId);
 
         if (boothInfo is null) {
-            _logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
+            logger.LogWarning("부스정보조회실패: 부스정보가 존재하지 않음 [부스: {BoothId}]", boothId);
 
             return APIResponse<EoullimBoothDetailResponse>.FromError("BOOTH_NOT_FOUND");
         }

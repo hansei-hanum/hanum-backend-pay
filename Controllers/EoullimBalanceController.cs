@@ -13,21 +13,13 @@ namespace Hanum.Pay.Controllers;
 /// <summary>
 /// 한세어울림한마당 사용자잔고
 /// </summary>
+/// <remarks>
+/// 한세어울림한마당 사용자잔고 생성자
+/// </remarks>
 [ApiController]
 [Route("eoullim/balance")]
 [HanumCommomAuthorize]
-public class EoullimPaymentController : ControllerBase {
-    private readonly ILogger<EoullimPaymentController> _logger;
-    private readonly HanumContext _context;
-
-    /// <summary>
-    /// 한세어울림한마당 사용자잔고 생성자
-    /// </summary>
-    public EoullimPaymentController(ILogger<EoullimPaymentController> logger, HanumContext context) {
-        _logger = logger;
-        _context = context;
-    }
-
+public class EoullimPaymentController(ILogger<EoullimPaymentController> logger, HanumContext context) : ControllerBase {
     /// <summary>
     /// 한세어울림한마당 사용자잔액조회
     /// </summary>
@@ -38,7 +30,7 @@ public class EoullimPaymentController : ControllerBase {
 
         return APIResponse<EoullimBalanceAmountResponse>.FromData(new() {
             BalanceAmount = await (
-                    from b in _context.EoullimBalances
+                    from b in context.EoullimBalances
                     where b.UserId == userId
                     select b.Amount
                 ).FirstOrDefaultAsync()
@@ -61,14 +53,14 @@ public class EoullimPaymentController : ControllerBase {
         return APIResponse<EoullimUserPaymentDetailResponse>.FromData(new() {
             Page = page,
             Limit = limit,
-            Total = await _context.EoullimPayments.CountAsync(p => p.UserId == userId),
+            Total = await context.EoullimPayments.CountAsync(p => p.UserId == userId),
             BalanceAmount = await (
-                    from b in _context.EoullimBalances
+                    from b in context.EoullimBalances
                     where b.UserId == userId
                     select b.Amount
                 ).FirstOrDefaultAsync(),
             Payments = await (
-                    from p in _context.EoullimPayments
+                    from p in context.EoullimPayments
                     where p.UserId == userId
                     orderby p.Id descending
                     select new EoullimUserPayment {
@@ -99,14 +91,14 @@ public class EoullimPaymentController : ControllerBase {
     [HttpPost("payment")]
     public async Task<APIResponse<EoullimPaymentResponse>> PostPayment([FromBody] EoullimPaymentRequest paymentRequest) {
         var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-        var paymentResult = await _context.EoullimPayment(
+        var paymentResult = await context.EoullimPayment(
             userId: userId,
             boothId: paymentRequest.BoothId,
             transferAmount: paymentRequest.Amount
         );
 
         if (!paymentResult.Success) {
-            _logger.LogWarning("결제실패: {ErrorMessage} [결제자: {UserId}, 부스: {BoothId}, 금액: {Amount}]",
+            logger.LogWarning("결제실패: {ErrorMessage} [결제자: {UserId}, 부스: {BoothId}, 금액: {Amount}]",
                 paymentResult.ErrorMessage ?? "Unknown", userId, paymentRequest.BoothId, paymentRequest.Amount);
 
             Response.StatusCode = 400;
@@ -116,7 +108,7 @@ public class EoullimPaymentController : ControllerBase {
 
         var transaction = paymentResult.Data.Transaction;
 
-        _logger.LogInformation("결제성공: [결제자: {UserId}, 부스: {BoothId}, 금액: {Amount}, 잔액: {BalanceAmount}]",
+        logger.LogInformation("결제성공: [결제자: {UserId}, 부스: {BoothId}, 금액: {Amount}, 잔액: {BalanceAmount}]",
             userId, paymentRequest.BoothId, paymentRequest.Amount, transaction.SenderAmount);
 
         return APIResponse<EoullimPaymentResponse>.FromData(
