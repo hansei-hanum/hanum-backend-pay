@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HanumPay.Models;
+namespace Hanum.Pay.Models;
 
 /// <summary>
 /// 한세어울림한마당 부스
 /// </summary>
-public partial class EoullimBooth
-{
+public partial class EoullimBooth {
     /// <summary>
     /// 부스 고유번호
     /// </summary>

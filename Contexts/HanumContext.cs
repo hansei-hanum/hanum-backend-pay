@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using HanumPay.Models;
+using Hanum.Pay.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HanumPay.Contexts;
+namespace Hanum.Pay.Contexts;
 
-public partial class HanumContext : DbContext
-{
+public partial class HanumContext : DbContext {
     public HanumContext(DbContextOptions<HanumContext> options)
-        : base(options)
-    {
+        : base(options) {
     }
 
     public virtual DbSet<EoullimBalance> EoullimBalances { get; set; }
@@ -24,14 +22,12 @@ public partial class HanumContext : DbContext
 
     public virtual DbSet<VerificationKey> VerificationKeys { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder
             .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
 
-        modelBuilder.Entity<EoullimBalance>(entity =>
-        {
+        modelBuilder.Entity<EoullimBalance>(entity => {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity
@@ -77,8 +73,7 @@ public partial class HanumContext : DbContext
                 .HasConstraintName("USER_ID_FK");
         });
 
-        modelBuilder.Entity<EoullimBooth>(entity =>
-        {
+        modelBuilder.Entity<EoullimBooth>(entity => {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 부스"));
@@ -118,8 +113,7 @@ public partial class HanumContext : DbContext
                 .HasColumnName("updatedAt");
         });
 
-        modelBuilder.Entity<EoullimPayment>(entity =>
-        {
+        modelBuilder.Entity<EoullimPayment>(entity => {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 결제내역"));
@@ -214,8 +208,7 @@ public partial class HanumContext : DbContext
                 .HasConstraintName("EOULLIM_PAYMENTS_USER_ID_FK");
         });
 
-        modelBuilder.Entity<EoullimTransaction>(entity =>
-        {
+        modelBuilder.Entity<EoullimTransaction>(entity => {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable(tb => tb.HasComment("한세어울림한마당 이체 내역"));
@@ -260,8 +253,7 @@ public partial class HanumContext : DbContext
                 .HasConstraintName("SENDER_BALANCE_FK");
         });
 
-        modelBuilder.Entity<User>(entity =>
-        {
+        modelBuilder.Entity<User>(entity => {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity
@@ -288,8 +280,7 @@ public partial class HanumContext : DbContext
                 .HasColumnName("profile");
         });
 
-        modelBuilder.Entity<VerificationKey>(entity =>
-        {
+        modelBuilder.Entity<VerificationKey>(entity => {
             entity.HasKey(e => e.Key).HasName("PRIMARY");
 
             entity
