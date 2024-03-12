@@ -1,6 +1,7 @@
 @page "/eoullim/manage/dashboard"
 @using Hanum.Pay.Shared.Components
-@inject Hanum.Pay.Services.EoullimBoothService BoothService
+@using Hanum.Pay.Contracts.Services
+@inject IEoullimDashboardService DashboardService
 
 <div class="dashboard">
     <div class="left">
@@ -60,7 +61,7 @@ new BarChart.Item { Label = "", Value = 0 },
 
     private async void OnDashboardTick(object? sender)
     {
-        Items = (await BoothService.GetBoothRankingAsync(limit: 6)).Ranks.Select(
+        Items = (await DashboardService.GetBoothRankingAsync(limit: 6)).Ranks.Select(
         rank => new Shared.Components.BarChart.Item
             {
                 Label = rank.Name,

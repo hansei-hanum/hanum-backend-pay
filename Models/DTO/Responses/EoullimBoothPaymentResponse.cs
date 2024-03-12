@@ -15,7 +15,7 @@ public class EoullimBoothPaymentDetailResponse : APIPagenationResponse {
     /// <summary>
     /// 결제내역
     /// </summary>
-    public required List<EoullimBoothPayment> Payments { get; set; }
+    public required IEnumerable<EoullimBoothPayment> Payments { get; set; }
 }
 
 /// <summary>
@@ -26,8 +26,4 @@ public partial class EoullimBoothPayment : EoullimPayment {
     /// 사용자이름
     /// </summary>
     public required string UserName { get; set; }
-    // /// <summary>
-    // /// 사용자신원정보
-    // /// </summary>
-    // public required UserRoleInfo? UserRole { get; set; }
 }

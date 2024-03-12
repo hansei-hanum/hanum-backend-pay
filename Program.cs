@@ -9,6 +9,7 @@ using Hanum.Core.Authentication;
 using Hanum.Core.Middleware;
 using Hanum.Pay.Core.Authentication;
 using Microsoft.AspNetCore.Authentication;
+using Hanum.Pay.Contracts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -62,7 +63,9 @@ services.AddAuthentication()
     .AddScheme<AuthenticationSchemeOptions, HanumBoothAuthenticationHandler>(HanumBoothAuthenticationHandler.SchemeName, null);
 
 // Services
-services.AddSingleton<EoullimBoothService>();
+services.AddTransient<IEoullimBoothService, EoullimBoothService>();
+services.AddTransient<IEoullimBalanceService, EoullimBalanceService>();
+services.AddSingleton<IEoullimDashboardService, EoullimDashboardService>();
 
 var app = builder.Build();
 

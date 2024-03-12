@@ -12,7 +12,7 @@ public class EoullimUserPaymentDetailResponse : APIPagenationResponse {
     /// <summary>
     /// 결제내역
     /// </summary>
-    public required List<EoullimUserPayment> Payments { get; set; }
+    public required IEnumerable<EoullimUserPayment> Payments { get; set; }
 }
 
 /// <summary>

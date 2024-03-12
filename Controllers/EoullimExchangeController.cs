@@ -3,10 +3,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 using Hanum.Core.Authentication;
-using Hanum.Pay.Contexts;
+using Hanum.Core.Models;
+using Hanum.Pay.Contracts.Services;
+using Hanum.Pay.Exceptions;
 using Hanum.Pay.Models.DTO.Requests;
 using Hanum.Pay.Models.DTO.Responses;
-using Hanum.Core.Models;
 
 namespace Hanum.Pay.Controllers;
 
@@ -21,7 +22,7 @@ namespace Hanum.Pay.Controllers;
 [HanumCommomAuthorize]
 public class EoullimExchangeController(
     ILogger<EoullimExchangeController> logger,
-    HanumContext context,
+    IEoullimBalanceService balanceService,
     IConfiguration configuration) : ControllerBase {
     readonly HashSet<ulong> _allowedUsers = new(configuration.GetSection("AllowedUsers")
             .GetSection("Exchange").Get<ulong[]>()!);
@@ -32,7 +33,7 @@ public class EoullimExchangeController(
     /// <param name="transferRequest">환전요청</param>
     /// <returns>환전응답</returns>
     [HttpPost("transfer")]
-    public async Task<APIResponse<EoullimExchangeTransferResponse>> PostTransfer([FromBody] EoullimExchangeTransferRequest transferRequest) {
+    public async Task<APIResponse<EoullimExchangeTransferResponse>> ExchangeTransfer([FromBody] EoullimExchangeTransferRequest transferRequest) {
         var userId = ulong.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         if (!_allowedUsers.Contains(userId)) {
@@ -41,38 +42,11 @@ public class EoullimExchangeController(
             return APIResponse<EoullimExchangeTransferResponse>.FromError(HanumStatusCode.NotAllowed);
         }
 
-        var exchangeResult = await context.EoullimPersonalBalanceCharge(
-            userId: transferRequest.UserId,
-            transferAmount: transferRequest.Amount,
-            message: transferRequest.Message
-        );
-
-        if (!exchangeResult.Success) {
-            logger.LogWarning("충전실패: {ErrorMessage} [사용자: {UserId}, 충전금액: {Amount}]",
-                exchangeResult.ErrorMessage ?? "Unknown", transferRequest.UserId, transferRequest.Amount);
-
-            return APIResponse<EoullimExchangeTransferResponse>.FromError(exchangeResult.StatusCode);
+        try {
+            return APIResponse<EoullimExchangeTransferResponse>.FromData(
+                await balanceService.ExchangeTransferAsync(transferRequest));
+        } catch (DbTransctionException ex) {
+            return APIResponse<EoullimExchangeTransferResponse>.FromError(ex.StatusCode);
         }
-
-        var transaction = exchangeResult.Data.Transaction;
-
-        logger.LogInformation("충전성공: [사용자: {UserId}, 충전금액: {Amount}, 잔액: {BalanceAmount}, 누적환전금: {TotalExchangeAmount}]",
-            transferRequest.UserId, transferRequest.Amount, transaction.ReceiverAmount, exchangeResult.Data.TotalExchangeAmount);
-
-        return APIResponse<EoullimExchangeTransferResponse>.FromData(
-            new() {
-                TotalExchangeAmount = exchangeResult.Data.TotalExchangeAmount,
-                Transaction = new() {
-                    Id = transaction.Id,
-                    SenderId = transaction.SenderId,
-                    ReceiverId = transaction.ReceiverId,
-                    TransferAmount = transaction.TransferAmount,
-                    Time = transaction.Time,
-                    SenderAmount = transaction.SenderAmount,
-                    ReceiverAmount = transaction.ReceiverAmount,
-                    Message = transaction.Message,
-                }
-            }
-        );
     }
 }

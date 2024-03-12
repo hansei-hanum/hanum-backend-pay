@@ -6,8 +6,8 @@ using MySqlConnector;
 
 namespace Hanum.Pay.Contexts;
 
-static class HanumEoullimContextExtension {
-    static IEnumerable<MySqlParameter> AddOutputParameters(
+internal static class HanumEoullimContextExtension {
+    private static IEnumerable<MySqlParameter> AddOutputParameters(
         this DbParameterCollection collection, params (string name, MySqlDbType type)[] parameters) {
         foreach (var (name, type) in parameters) {
             var param = new MySqlParameter(name, type) { Direction = ParameterDirection.Output };
@@ -16,7 +16,7 @@ static class HanumEoullimContextExtension {
         }
     }
 
-    static IEnumerable<MySqlParameter> AddInputParameters(
+    private static IEnumerable<MySqlParameter> AddInputParameters(
         this DbParameterCollection collection, params (string name, object? value)[] parameters) {
         foreach (var (name, value) in parameters) {
             var param = new MySqlParameter(name, value ?? DBNull.Value);
@@ -25,7 +25,7 @@ static class HanumEoullimContextExtension {
         }
     }
 
-    static object? EnsureNull(object? value) => value == DBNull.Value ? null : value;
+    private static object? EnsureNull(object? value) => value == DBNull.Value ? null : value;
 
     /// <summary>
     /// 한세어울림한마당 부스결제
@@ -36,7 +36,7 @@ static class HanumEoullimContextExtension {
     /// <param name="transferAmount">결제 금액</param>
     /// <param name="message">메시지</param>
     /// <returns>결제 결과</returns>
-    public static async Task<StoredProcedureResult<EoullimPaymentResult>> EoullimPayment(
+    public static async Task<StoredProcedureResult<EoullimPaymentResult>> EoullimPaymentAsync(
         this HanumContext context, ulong userId, ulong boothId, ulong transferAmount, string? message = null) {
         using var command = context.Database.GetDbConnection().CreateCommand();
         command.CommandText = "EoullimPayment";
@@ -93,7 +93,7 @@ static class HanumEoullimContextExtension {
     /// <param name="paymentId">결제 ID</param>
     /// <param name="message">메시지</param>
     /// <returns>환불 결과</returns>
-    public static async Task<StoredProcedureResult<EoullimRefundResult>> EoullimPaymentCancel(
+    public static async Task<StoredProcedureResult<EoullimRefundResult>> EoullimPaymentCancelAsync(
         this HanumContext context, ulong paymentId, string? message = null) {
         using var command = context.Database.GetDbConnection().CreateCommand();
         command.CommandText = "EoullimPaymentCancel";
@@ -153,7 +153,7 @@ static class HanumEoullimContextExtension {
     /// <param name="transferAmount">충전 금액</param>
     /// <param name="message">메시지</param>
     /// <returns>충전 결과</returns>
-    public static async Task<StoredProcedureResult<EoullimExchangeTransferResult>> EoullimPersonalBalanceCharge(
+    public static async Task<StoredProcedureResult<EoullimExchangeTransferResult>> EoullimPersonalBalanceChargeAsync(
         this HanumContext context, ulong userId, ulong transferAmount, string? message = null) {
         using var command = context.Database.GetDbConnection().CreateCommand();
         command.CommandText = "EoullimPersonalBalanceCharge";
