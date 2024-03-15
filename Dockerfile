@@ -6,6 +6,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["Hanum.Pay.csproj", "."]
+RUN dotnet nuget add source --username $NUGET_USERNAME --password $NUGET_AUTH_TOKEN --store-password-in-clear-text --name hanum "https://nuget.pkg.github.com/hansei-hanum/index.json"
 RUN dotnet restore "./Hanum.Pay.csproj"
 COPY . .
 WORKDIR "/src/."
