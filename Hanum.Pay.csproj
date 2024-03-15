@@ -44,10 +44,10 @@
     </Content>
   </ItemGroup>
   
-  <Target Name="CopyDocumentationFiles" AfterTargets="Build">
+  <Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
     <ItemGroup>
-      <DocFile Include="$(PkgHanum_Core)/lib/$(TargetFramework)/Hanum.Core.xml" />
+      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')"
+      Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
     </ItemGroup>
-    <Copy SourceFiles="@(DocFile)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
