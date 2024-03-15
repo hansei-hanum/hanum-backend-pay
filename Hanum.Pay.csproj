@@ -21,6 +21,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hanum.Core" Version="1.1.9" GeneratePathProperty="true" />
+    
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -42,7 +44,10 @@
     </Content>
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\Hanum.Core\Hanum.Core.csproj" />
-  </ItemGroup>
+  <Target Name="CopyDocumentationFiles" AfterTargets="Build">
+    <ItemGroup>
+      <DocFile Include="$(PkgHanum_Core)/lib/$(TargetFramework)/Hanum.Core.xml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DocFile)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
