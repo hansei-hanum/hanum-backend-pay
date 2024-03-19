@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using Hanum.Core.Helpers;
+using Hanum.Core.Models;
 using Hanum.Pay.Contexts;
 using Hanum.Pay.Contracts.Services;
 using Hanum.Pay.Exceptions;
@@ -10,9 +11,9 @@ using Hanum.Pay.Models.DTO.Responses;
 namespace Hanum.Pay.Services;
 
 public class EoullimBoothService(ILogger<EoullimBoothService> logger, HanumContext context) : IEoullimBoothService {
-    public async Task<DbOffsetBasedPagenationResult<EoullimBoothPayment>> GetPaymentDetailAsync(ulong boothId, int page = 1, int limit = 20) {
+    public async Task<DbOffsetBasedPaginationResult<EoullimBoothPayment>> GetPaymentDetailAsync(ulong boothId, int page = 1, int limit = 20) {
         return await context.EoullimPayments.Where(p => p.BoothId == boothId)
-            .ToOffsetPagenation(
+            .ToOffsetPagination(
                 p => new EoullimBoothPayment {
                     Id = p.Id,
                     UserId = p.UserId,

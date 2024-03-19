@@ -1,4 +1,5 @@
 
+using Hanum.Core.Models;
 using Hanum.Pay.Exceptions;
 using Hanum.Pay.Models.DTO.Requests;
 using Hanum.Pay.Models.DTO.Responses;
@@ -12,7 +13,7 @@ public interface IEoullimBoothService {
     /// <param name="boothId">부스 고유번호</param>
     /// <param name="page">페이지</param>
     /// <param name="limit">페이지 당 항목 수</param>
-    public Task<DbOffsetBasedPagenationResult<EoullimBoothPayment>> GetPaymentDetailAsync(ulong boothId, int page = 1, int limit = 20);
+    public Task<DbOffsetBasedPaginationResult<EoullimBoothPayment>> GetPaymentDetailAsync(ulong boothId, int page = 1, int limit = 20);
     /// <summary>
     /// 환불
     /// </summary>

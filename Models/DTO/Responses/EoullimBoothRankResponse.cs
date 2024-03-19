@@ -3,7 +3,7 @@ namespace Hanum.Pay.Models.DTO.Responses;
 /// <summary>
 /// 한세어울림한마당부스순위
 /// </summary>
-public class EoullimBoothRankResponse : APIPagenationResponse {
+public class EoullimBoothRankResponse : APIPaginationResponse {
     /// <summary>
     /// 부스순위
     /// </summary>

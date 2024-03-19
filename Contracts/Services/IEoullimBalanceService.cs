@@ -1,3 +1,4 @@
+using Hanum.Core.Models;
 using Hanum.Pay.Exceptions;
 using Hanum.Pay.Models.DTO.Requests;
 using Hanum.Pay.Models.DTO.Responses;
@@ -24,7 +25,7 @@ public interface IEoullimBalanceService {
     /// <param name="page">페이지</param>
     /// <param name="limit">페이지당 항목수</param>
     /// <returns>사용자잔액상세조회응답</returns>
-    public Task<DbOffsetBasedPagenationResult<EoullimUserPayment>> GetPaymentsDetailAsync(ulong userId, int page = 1, int limit = 20);
+    public Task<DbOffsetBasedPaginationResult<EoullimUserPayment>> GetPaymentsDetailAsync(ulong userId, int page = 1, int limit = 20);
     /// <summary>
     /// 한세어울림한마당 결제요청
     /// </summary>

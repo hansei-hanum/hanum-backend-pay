@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hanum.Core.Authentication;
 using Hanum.Core.Models;
 using Hanum.Pay.Models.DTO.Responses;
+using Hanum.Core.Models.DTO.Responses;
 
 namespace Hanum.Pay.Controllers;
 

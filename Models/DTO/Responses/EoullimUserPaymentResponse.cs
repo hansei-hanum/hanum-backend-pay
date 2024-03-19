@@ -4,7 +4,7 @@ namespace Hanum.Pay.Models.DTO.Responses;
 /// <summary>
 /// 한세어울림한마당 사용자결제내역
 /// </summary>
-public class EoullimUserPaymentDetailResponse : APIPagenationResponse {
+public class EoullimUserPaymentDetailResponse : APIPaginationResponse {
     /// <summary>
     /// 잔액
     /// </summary>

@@ -1,11 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 
 using Hanum.Core.Helpers;
+using Hanum.Core.Models;
 using Hanum.Pay.Contexts;
 using Hanum.Pay.Contracts.Services;
 using Hanum.Pay.Exceptions;
 using Hanum.Pay.Models.DTO.Requests;
 using Hanum.Pay.Models.DTO.Responses;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hanum.Pay.Services;
 
@@ -52,10 +53,10 @@ public class EoullimBalanceService(ILogger<EoullimBalanceService> logger, HanumC
         ).FirstOrDefaultAsync();
     }
 
-    public async Task<DbOffsetBasedPagenationResult<EoullimUserPayment>> GetPaymentsDetailAsync(ulong userId, int page = 1, int limit = 20) {
+    public async Task<DbOffsetBasedPaginationResult<EoullimUserPayment>> GetPaymentsDetailAsync(ulong userId, int page = 1, int limit = 20) {
         return await context.EoullimPayments.Where(p => p.UserId == userId)
             .OrderByDescending(p => p.Id)
-            .ToOffsetPagenation(
+            .ToOffsetPagination(
                 p => new EoullimUserPayment {
                     Id = p.Id,
                     UserId = p.UserId,

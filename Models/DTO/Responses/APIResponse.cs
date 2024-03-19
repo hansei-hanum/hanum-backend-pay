@@ -3,7 +3,7 @@ namespace Hanum.Pay.Models.DTO.Responses;
 /// <summary>
 /// API페이징응답
 /// </summary>
-public class APIPagenationResponse {
+public class APIPaginationResponse {
     /// <summary>
     /// 페이지
     /// </summary>
